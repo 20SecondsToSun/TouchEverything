@@ -26,8 +26,7 @@ void Button::setup(ci::gl::Texture _tex,Font _font, string _char, bool _isText)
 
 void Button::setScreenField(Vec2f vec)
 {
-	field = Rectf(vec.x,vec.y,vec.x+texture.getWidth(),vec.y+texture.getHeight());
-	
+	field = Rectf(vec.x,vec.y,vec.x+texture.getWidth(),vec.y+texture.getHeight());	
 }
 
 void Button::down()

@@ -17,7 +17,7 @@ string VirtualKeyboard::fourthLineCharacters2[10]  = {"/",":",";",",","?","!","'
 
 int    VirtualKeyboard::lineLength1 = 10;
 
-float  VirtualKeyboard::_xOffset1 = 0.f;//14.0f;
+float  VirtualKeyboard::_xOffset1 = 14.0f;
 float  VirtualKeyboard::_xOffset2 = 14.0f;
 float  VirtualKeyboard::_xOffset3 = 13.0f;
 float  VirtualKeyboard::_xOffset4 = 12.0f;
@@ -158,32 +158,6 @@ void VirtualKeyboard::setup( ci::app::WindowRef window, Vec2f _position)
 	buttonsMainKeyboard.push_back(sendBtn);
 	buttonsSecondKeyboard.push_back( sendBtn );
 
-
-
-	mailBtn->setup(mailBtnTex, mFont, "mail.ru", false);
-	pos = Vec2f(1295.0f, 30)+shift_Y;
-	mailBtn->setScreenField(pos);	
-	buttonsMainKeyboard.push_back(mailBtn);
-	buttonsSecondKeyboard.push_back( mailBtn );
-
-	gmailBtn->setup(gmailBtnTex, mFont, "gmail.com", false);
-	pos = Vec2f(1295.0f, 122.0f) + shift_Y;
-	gmailBtn->setScreenField(pos);	
-	buttonsMainKeyboard.push_back(gmailBtn);
-	buttonsSecondKeyboard.push_back( gmailBtn );
-
-	yaBtn->setup(yaBtnTex, mFont, "yandex.ru", false);
-	pos = Vec2f(1295.0f, 214.0f) + shift_Y;
-	yaBtn->setScreenField(pos);	
-	buttonsMainKeyboard.push_back(yaBtn);
-	buttonsSecondKeyboard.push_back( yaBtn );
-
-	ramBtn->setup(ramBtnTex, mFont, "rambler.ru", false);
-	pos = Vec2f(1295.0f, 306.0f) + shift_Y;
-	ramBtn->setScreenField(pos);	
-	buttonsMainKeyboard.push_back(ramBtn);
-	buttonsSecondKeyboard.push_back( ramBtn );
-
 	mainWindow = window;
 	position = _position;
 
@@ -223,6 +197,7 @@ void VirtualKeyboard::draw( )
 {
 	gl::pushMatrices();
 	
+	gl::translate(position);
 	for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )
 	{
 		(*item)->draw();

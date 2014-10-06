@@ -10,7 +10,6 @@
 #include "cinder/params/Params.h"
 #include "TapGesture.h"
 
-
 namespace leapGestures{
 
 	const std::string    TWO_FINGERS   =  "TWO_FINGERS";
@@ -31,21 +30,21 @@ namespace leapStates{
 
 struct buttonStruct
 {
-	ci::Vec3f	point1;
-	ci::Vec3f	point2;
+	ci::Vec3f			 point1;
+	ci::Vec3f			 point2;
 };
 
 class LeapController 
 {	  
   public:
 	
-	void						setup(); 
-	void						update();
-	void						shutdown();	
-	void						draw();
+	void							setup(); 
+	void							update();
+	void							shutdown();	
+	void							draw();
 
-	void						resetInitParams();
-	void						sleep(int seconds);
+	void							resetInitParams();
+	void							sleep(int seconds);
 
 	static LeapController* Instance() {
 			return &LeapControllerState;
@@ -74,6 +73,13 @@ class LeapController
 	 void							setButtonX2();
 	 void							deleteLastButton();
 
+	 void							hidePointer( );
+
+	 bool							isPointerHide;
+
+	 void							showSymbol(int i);
+
+
 protected:
 	LeapController(){};
 	
@@ -82,46 +88,34 @@ protected:
 
 	 void 						onFrame( Leap::Frame frame );	
 	 void						setGestureAllowTimer();
+	 void						calculateFingerTipPosition();
+	 void						fingerTapFire();
+	 void						drawGrid( );
 
 	 ci::Vec2f					warpPointable( const Leap::Pointable& p );
 	 Leap::InteractionBox		iBox;
 	 Leap::Vector				leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
 
-
 	 bool						GESTURE_ALLOW;	
 	 int						GESTURE_ALLOW_TIMER;
-	  // Leap
+	
 	 LeapMotion::DeviceRef		leapDevice;
 	 Leap::Frame				leapFrame;
 	
 	 ci::Timer					gestureTimer;
 	 ci::Vec2f					mFingerTipPosition;
 
-
 	 int						trackedTipID;
-	 Leap::Vector				planePoints[6];
+	
 	 int						indexToSet;
 	 Leap::Pointable			trackedPoint;
 	 std::string				leapTouchMode; 
 	 ci::Vec3f					finger3DPosition;
 
-	 
-
-	 PlaneCoeff					planes[6];	
-
 	 LeapTapParams				leapTapParams;
 
-	 void						calculateFingerTipPosition();
-	 void						fingerTapFire();
-	 void						drawGrid( );
-
-	
-
 	 bool						buttonX1Record, buttonX2Record;
-	 int						buttonIndex;
-	 buttonStruct				buttonVec[6];
-
-
+	 int						buttonIndex;	 
 
 	 TapGesture					tapGesture;
 
@@ -131,10 +125,14 @@ protected:
 
 	 int						messageToShow;
 
-
 	 int						buttonsArraySize;
 	 ci::Anim<float>			alphasArray[6];
 	 std:: string				buttonNames[6];
+	 PlaneCoeff					planes[6];
+	 Leap::Vector				planePoints[6];
+	 buttonStruct				buttonVec[6];
+
 	 ci::Font					hintFont;
 
+	 std::vector<ci::gl::Texture>	texArray;
 };

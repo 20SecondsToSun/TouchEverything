@@ -23,10 +23,11 @@ void LeapController::setup()
 
 	GESTURE_ALLOW = true;
 
-	buttonX1Record = buttonX2Record = false;
+	
 	buttonIndex	=	0;
 	messageToShow = -1;
-		// set up the camera
+
+	// set up the camera
 	CameraPersp cam;
 	cam.setEyePoint( Vec3f(5.0f, 300.0f, 300.0f) );
 	cam.setCenterOfInterestPoint( Vec3f(0.0f, 250.0f, 0.0f) );
@@ -35,17 +36,17 @@ void LeapController::setup()
 
 	leapTouchMode = leapStates::DEBUG;
 
-	correctVec = Vec2f(0, 0);	
-	leapTapParams.isExtended = false;
-	leapTapParams.isStabilized = true;
-	leapTapParams.maxSecondsToTap = 0.65f;
-	leapTapParams.minDistanceToHover = 25.5;
-	leapTapParams.minDistanceToTap = 9;
-	leapTapParams.minXVelocity = 50;
-	leapTapParams.minYVelocity = 50;
-	leapTapParams.minZVelocity = 8;
+	correctVec						= Vec2f(0, 0);	
+	leapTapParams.isExtended        = false;
+	leapTapParams.isStabilized      = true;
+	leapTapParams.maxSecondsToTap   = 0.65f;
+	leapTapParams.minDistanceToHover= 25.5;
+	leapTapParams.minDistanceToTap	= 20;
+	leapTapParams.minXVelocity		= 80;
+	leapTapParams.minYVelocity		= 80;
+	leapTapParams.minZVelocity		= 8;
 
-	/*mParams = params::InterfaceGl::create( getWindow(), "App parameters", toPixels( Vec2i( 200, 400 ) ) );
+	mParams = params::InterfaceGl::create( getWindow(), "App parameters", toPixels( Vec2i( 200, 400 ) ) );
 
 	mParams->addParam( "isExtended", &leapTapParams.isExtended);
 	mParams->addParam( "isStabilized", &leapTapParams.isStabilized);
@@ -60,15 +61,24 @@ void LeapController::setup()
 	mParams->addParam( "maxSecondsToTap", &leapTapParams.maxSecondsToTap);
 	mParams->addSeparator();
 	mParams->addParam( "correctVecX", &correctVec.x);
-	mParams->addParam( "correctVecY", &correctVec.y);*/
+	mParams->addParam( "correctVecY", &correctVec.y);
 
 	buttonsArraySize = 6;	
-
+	buttonX1Record = buttonX2Record = false;
 	for (int i = 0; i < buttonsArraySize; i++)
 	{
 		alphasArray[i] = 0;
 		buttonNames[i] = "ймною "+ to_string(i+1);
 	}
+
+	isPointerHide = false;
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		texArray.push_back(gl::Texture( loadImage( loadAsset(   "fig"+to_string(i+1)+".png" ))));
+	}
+
 }
 
 void LeapController::resetInitParams()
@@ -105,8 +115,8 @@ void LeapController::setFinger3DPosition()
 	if(leapTapParams.isStabilized)	
 	{
 		finger3DPosition = Vec3f(trackedPoint.stabilizedTipPosition().x,
-									trackedPoint.stabilizedTipPosition().y, 
-									trackedPoint.tipPosition().z);
+								 trackedPoint.stabilizedTipPosition().y, 
+								 trackedPoint.tipPosition().z);
 	}
 	else
 	{
@@ -123,7 +133,7 @@ void LeapController::update()
 	for ( Leap::HandList::const_iterator handIter = hands.begin(); handIter != hands.end(); ++handIter )
 	{
 		const Leap::Hand& hand  = *handIter;				
-		auto pointables			= hand.fingers().extended().count();
+		auto pointables			=  hand.fingers().extended().count();
 
 		setTrackedPoint(hand.fingers());		
 
@@ -170,10 +180,10 @@ void LeapController::calculateFingerTipPosition()
 {
 	int planeNum = 0;
 	float posX = abs((finger3DPosition.x - planes[planeNum].point0.x)/(planes[planeNum].point1.x - planes[planeNum].point0.x));
-	float __x = getWindowWidth() * posX;
+	float __x  = posX*getWindowWidth();//;//400+/*getWindowWidth()*/ 1072* posX;
 
 	float posY = abs((finger3DPosition.y - planes[planeNum].point0.y)/(planes[planeNum].point2.y - planes[planeNum].point0.y));
-	float __y =  getWindowHeight()*posY;	
+	float __y  =  posY*getWindowHeight();//380+/*getWindowHeight()*/550*posY;	
 
 	mFingerTipPosition = Vec2f(__x, __y) + correctVec;		
 }
@@ -183,7 +193,7 @@ void LeapController::fingerTapFire()
 	saveCoordsVec = tapGesture.saveCoordsVec;
 	leapTouchSignal();	
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < buttonsArraySize; i++)
 	{
 		alphasArray[i] = 0;
 	}
@@ -196,18 +206,29 @@ void LeapController::fingerTapFire()
 			finger3DPosition.y >= buttonVec[i].point2.y 
 			)
 		{
-			console()<<"BUTTON:::::::::::::::::::::  "<< i << endl;	
-
-			timeline().apply( &alphasArray[i], 1.0f, 0.0f, 0.3f, EaseOutQuad() );
+			console()<<"BUTTON:::::::::::::::::::::  "<< i << endl;
+			alphasArray[i] = 1;
+			//timeline().apply( &alphasArray[i], 1.0f, 0.0f, 0.3f, EaseOutQuad() ).delay(2);
+			timeline().apply( &alphasArray[i], 1.0f, 0.0f, 1.1f, EaseOutQuad() ).delay(1.5);
 			break;
 		}	
 	}
+
+	sleep(1.0);
+}
+
+void LeapController::showSymbol(int i)
+{
+	buttonIndex = 3;
+	alphasArray[i] = 1;
+	timeline().apply( &alphasArray[i], 1.0f, 0.0f, 1.1f, EaseOutQuad() ).delay(1.5);
+	console()<<"show symbol ::  "<<i <<endl;
 }
 
 void LeapController::draw()
 {
-	gl::color(Color::hex(0xff0000));
-
+	gl::color(Color::hex(0xfa8825));
+	if (!isPointerHide)
 	gl::drawSolidCircle(mFingerTipPosition, 7);
 	gl::color(Color::white());
 
@@ -226,10 +247,10 @@ void LeapController::draw()
 		for (int i = 0; i < 1; i++)
 		{	
 			gl::color( Colorf(0.2f, 0.2f, 0.2f) );
-			gl::drawLine(  planes[i].point0, planes[i].point1);
-			gl::drawLine(  planes[i].point0, planes[i].point2);
-			gl::drawLine(  planes[i].point1, planes[i].point3);
-			gl::drawLine(  planes[i].point2, planes[i].point3);
+			gl::drawLine( planes[i].point0, planes[i].point1);
+			gl::drawLine( planes[i].point0, planes[i].point2);
+			gl::drawLine( planes[i].point1, planes[i].point3);
+			gl::drawLine( planes[i].point2, planes[i].point3);
 
 			gl::color( Color::hex(0xffff00));
 			gl::drawSphere( planes[i].point0, 0.2);
@@ -245,6 +266,7 @@ void LeapController::draw()
 		}
 
 		gl::color( Color::hex(0xff0000));
+		
 		gl::drawSphere(finger3DPosition, 2);
 
 		gl::disableDepthRead();
@@ -253,18 +275,28 @@ void LeapController::draw()
 		gl::popMatrices();
 	}
 
+	gl::enableAlphaBlending();
 	for (int i = 0; i < buttonIndex; i++)
 	{		
-		//console()<<"  "<<buttonNames[i]<<"  "<<alphasArray[i]<<endl;
-		if (alphasArray[i]!=0)
-		Utils::textFieldDraw(buttonNames[i], hintFont, Vec2f(0.f, 40.f), ColorA(1, 0, 0, alphasArray[i]));
+		if (alphasArray[i] > 0)
+		{
+			//Utils::textFieldDraw(buttonNames[i], hintFont, Vec2f(0.f, 40.f), ColorA(1.f, 0.f, 0.f, alphasArray[i]));
+			//console()<<"alpha::  "<<alphasArray[i]<<endl;
+			gl::color(ColorA(1.f, 1.f, 1.f, alphasArray[i]));
+			gl::draw(texArray[i]);
+			gl::color(Color::white());
+		}
+		//	
 	}
-	//Utils::textFieldDraw(buttonNames[0], hintFont, Vec2f(0.f, 40.f), ColorA(1, 0, 0, 1));
-	//Utils::textFieldDraw(buttonNames[1], hintFont, Vec2f(0.f, 140.f), ColorA(1, 0, 0, 1));
 	
-	// Draw the interface
+	//Draw the interface
 	//mParams->draw();
 }
+void LeapController::hidePointer(  )
+{
+	isPointerHide = !isPointerHide;
+}
+
 
 void LeapController::drawGrid(  )
 {
@@ -306,13 +338,11 @@ void LeapController::calcTouchPlane(PlaneCoeff& planes, Vec3f point1, Vec3f poin
 	float x3 = point3.x;
 	float y3 = point3.y;
 	float z3 = point3.z;
-
 	float z4 = point4.z;
 
 	float middle_z = (z1+z2+z3+z4)/4;
 
 	//z1 = z2 = z3 = z4 = middle_z;
-
 
 	planes.point0 = Vec3f(x1, y1, z1);
 	planes.point1 = Vec3f(x2, y2, z2);
@@ -324,11 +354,6 @@ void LeapController::calcTouchPlane(PlaneCoeff& planes, Vec3f point1, Vec3f poin
 	planes.B = z1 * (x2 - x3)  + z2 * (x3 - x1) + z3 *(x1 - x2);
 	planes.C = x1 * (y2 - y3)  + x2 * (y3 - y1) + x3 *(y1 - y2);
 	planes.D = -(x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1));
-
-	//console()<<" planeA ----   :::  "<< planes.A<<endl;
-	//console()<<" planeB ----   :::  "<< planes.B<<endl;
-	//console()<<" planeC ----   :::  "<< planes.C<<endl;
-	//console()<<" planeD ----   :::  "<< planes.D<<endl;
 }
 
 void LeapController::setButtonX1()
@@ -355,7 +380,7 @@ void LeapController::setPlanePointToRecord(int pointIndex )
 		buttonX2Record = false;
 	}
 	else
-		indexToSet = pointIndex-1;
+		indexToSet = pointIndex - 1;
 }
 
 void LeapController::recordPlanePoint()
@@ -387,7 +412,14 @@ void LeapController::swapTouchMode( )
 
 void LeapController::setDebugMode( )
 {
-	leapTouchMode = leapStates::DEBUG;
+	if( leapTouchMode == leapStates::DEBUG)
+	{
+		leapTouchMode = leapStates::DEFAULT;
+	}
+	else
+	{
+		 leapTouchMode = leapStates::DEBUG;
+	}	
 }
 
 Vec2f LeapController::warpPointable( const Leap::Pointable& p )
@@ -410,5 +442,4 @@ void LeapController::onFrame( Leap::Frame frame )
 
 void LeapController::shutdown( )
 {
-
 }

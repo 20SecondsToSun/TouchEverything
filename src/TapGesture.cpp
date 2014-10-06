@@ -22,8 +22,9 @@ void TapGesture::compute()
 		{
 			saveCoords = mFingerTipPosition;
 
-			if ((trackedPoint.tipVelocity().magnitude()< 5.0f && distance < leapTapParams.minDistanceToTap && gestureOut ) || (distance<2 && gestureOut))
+			if ((trackedPoint.tipVelocity().magnitude()< 5.0f && distance < leapTapParams.minDistanceToTap && gestureOut ) || (distance<4 && gestureOut))
 			{	
+				saveCoordsVec.push_back(mFingerTipPosition);
 				isFired    = true;					
 				gestureOut = false;
 				initParams();	

@@ -294,13 +294,15 @@ void Utils::writeCrashLog(std::string path)
 void Utils::textFieldDraw(std::string text,Font font, Vec2f coords, ColorA color)
 {
 	gl::pushMatrices();
-	gl::translate(coords);
+	gl::translate(0,coords.y);
 	TextLayout simple;
 	simple.clear(ColorA(1,1,1,0));
 	simple.setFont( font );
 	simple.setColor(color );
-	simple.addLine(cp1251_to_utf8(text.c_str()));	
-	gl::draw(gl::Texture( simple.render( true, false ) ));
+	simple.addLine(cp1251_to_utf8(text.c_str()));
+	gl::Texture tex = gl::Texture( simple.render( true, false ) );
+	gl::translate(0.5*(getWindowWidth() - tex.getWidth()),0);
+	gl::draw(tex);
 	gl::popMatrices();	
 
 }
