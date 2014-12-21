@@ -1,5 +1,4 @@
 #include "VirtualKeyboard.h"
-#include "AssetsManager.h"
 #include <ctype.h>
 
 using namespace ci;
@@ -69,7 +68,6 @@ void VirtualKeyboard::setup( ci::app::WindowRef window, Vec2f _position)
 		Button* btn = new Button();
 		btn->setup(_simple, mFont, to_string(i));
 		btn->setScreenField(lineOffset1 + Vec2f(i*(_xOffset1 + _width), 0.0f)+shift_Y);		
-		//console()<<"  id::  "<< btn->getBtnId()<<std::endl;
 		buttonsMainKeyboard.push_back( btn );
 		buttonsSecondKeyboard.push_back( btn );
 	}
@@ -226,8 +224,8 @@ void VirtualKeyboard::setPosition(Vec2f _vec )
 
 void VirtualKeyboard::MouseDown( MouseEvent &event )
 {
-	//Vec2f pos = position;
-	lastCode ="-1";
+	lastCode = "-1";
+
 	Vec2f coords   = event.getPos() - position;
 
 	for( auto item = activeKeyboard->begin(); item != activeKeyboard->end(); ++item )
@@ -236,6 +234,7 @@ void VirtualKeyboard::MouseDown( MouseEvent &event )
 		{
 			lastCode = (*item)->getBtnId();
 			(*item)->down();
+
 			if (lastCode == "shift")
 			{
 				changeShiftMode();
@@ -245,9 +244,8 @@ void VirtualKeyboard::MouseDown( MouseEvent &event )
 			{
 				changeKeyboardMode();
 			}
-			else	keyboardTouchSignal();
+			else keyboardTouchSignal();
 
-			//console()<<" last code ::  "<<lastCode<<std::endl;
 			event.setHandled(true );
 			break;
 		}

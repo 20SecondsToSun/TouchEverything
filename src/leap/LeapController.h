@@ -8,10 +8,12 @@
 #include "cinder/MayaCamUI.h"
 #include "Cinder-LeapMotion.h"
 #include "cinder/params/Params.h"
-#include "TapGesture.h"
+#include "cinder/ImageIo.h"
+#include "gesture/TapGesture.h"
+#include "cinder/gl/Texture.h"
 
-namespace leapGestures{
-
+namespace leapGestures
+{
 	const std::string    TWO_FINGERS   =  "TWO_FINGERS";
 	const std::string    ONE_FINGER    =  "ONE_FINGER";
 	const std::string    SWIPE_LEFT    =  "SWIPE_LEFT";
@@ -22,7 +24,8 @@ namespace leapGestures{
 	const std::string    HAND_OVER	   =  "HAND_OVER";		
 }
 
-namespace leapStates{
+namespace leapStates
+{
 	const std::string    DEFAULT	   =  "DEFAULT";
 	const std::string    TOUCH_MODE    =  "TOUCH_MODE";
 	const std::string    DEBUG		   =  "DEBUG";
@@ -135,4 +138,11 @@ protected:
 	 ci::Font					hintFont;
 
 	 std::vector<ci::gl::Texture>	texArray;
+
+	 void mouseDown( ci::app::MouseEvent event );
+	 void mouseDrag( ci::app::MouseEvent event);	
+	 void keyDown( ci::app::KeyEvent event );
+
 };
+
+inline LeapController&	leap() { return *LeapController::Instance(); };

@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src\virtualKeyboard;..\src\utils;..\src\buttons</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -108,25 +108,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\blocks\LeapMotion\src\Cinder-LeapMotion.cpp" />
-    <ClCompile Include="..\src\AssetsManager.cpp" />
-    <ClCompile Include="..\src\Button.cpp" />
+    <ClCompile Include="..\src\buttons\Button.cpp" />
+    <ClCompile Include="..\src\leap\gesture\TapGesture.cpp" />
     <ClCompile Include="..\src\leap\LeapController.cpp" />
-    <ClCompile Include="..\src\TapGesture.cpp" />
     <ClCompile Include="..\src\TouchEverythingApp.cpp" />
-    <ClCompile Include="..\src\Utils.cpp" />
-    <ClCompile Include="..\src\VirtualKeyboard.cpp" />
+    <ClCompile Include="..\src\virtualKeyboard\VirtualKeyboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\LeapMotion\src\Cinder-LeapMotion.h" />
     <ClInclude Include="..\blocks\LeapMotion\src\Leap.h" />
     <ClInclude Include="..\blocks\LeapMotion\src\LeapMath.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\AssetsManager.h" />
-    <ClInclude Include="..\src\Button.h" />
+    <ClInclude Include="..\src\buttons\Button.h" />
+    <ClInclude Include="..\src\leap\gesture\TapGesture.h" />
     <ClInclude Include="..\src\leap\LeapController.h" />
-    <ClInclude Include="..\src\TapGesture.h" />
-    <ClInclude Include="..\src\Utils.h" />
-    <ClInclude Include="..\src\VirtualKeyboard.h" />
+    <ClInclude Include="..\src\utils\StringTools.h" />
+    <ClInclude Include="..\src\utils\TextTools.h" />
+    <ClInclude Include="..\src\virtualKeyboard\VirtualKeyboard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -1,5 +1,4 @@
 #include "LeapController.h"
-#include "Utils.h"
 #include "cinder/Timeline.h"
 
 using namespace std;
@@ -76,9 +75,26 @@ void LeapController::setup()
 
 	for (int i = 0; i < 3; i++)
 	{
-		texArray.push_back(gl::Texture( loadImage( loadAsset(   "fig"+to_string(i+1)+".png" ))));
+		texArray.push_back(ci::gl::Texture( loadImage( loadAsset(   "fig"+to_string(i+1)+".png" ))));
 	}
 
+	App::get()->getSignalUpdate().connect(bind(&LeapController::update, this));
+	App::get()->getSignalShutdown().connect(bind(&LeapController::shutdown, this));
+
+
+	getWindow()->getSignalMouseDown().connect( std::bind( &LeapController::mouseDown, this,std::placeholders::_1) );
+	getWindow()->getSignalMouseDrag().connect( std::bind( &LeapController::mouseDrag, this,std::placeholders::_1) );
+	getWindow()->getSignalKeyDown().connect( std::bind( &LeapController::keyDown, this,std::placeholders::_1) );
+}
+
+void LeapController::mouseDown( MouseEvent event )
+{
+	mMayaCam.mouseDown(event.getPos());	
+}
+
+void LeapController::mouseDrag( MouseEvent event )
+{	
+	mMayaCam.mouseDrag( event.getPos(), event.isLeftDown(), event.isMiddleDown(), event.isRightDown());
 }
 
 void LeapController::resetInitParams()
@@ -443,3 +459,66 @@ void LeapController::onFrame( Leap::Frame frame )
 void LeapController::shutdown( )
 {
 }
+
+void LeapController::keyDown( KeyEvent event )
+{
+	int index = 0;
+
+	switch ( event.getCode() )
+	{
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+		index = event.getCode() - '0';			
+		setPlanePointToRecord(index);
+		break;
+
+	case 'x':			
+		setButtonX1();
+		break;
+
+	case 'y':			
+		setButtonX2();
+		break;
+
+	case 'd':			
+		setDebugMode();
+		break;
+
+	case 13:			
+		recordPlanePoint();					
+		break;
+
+	case 8:			
+		deleteLastButton();					
+		break;
+
+	case ' ':
+		swapTouchMode();
+		break;	
+
+	case 'h':
+		hidePointer();
+		break;
+
+	case 'u':
+		showSymbol(0);
+		break;
+
+	case 'i':
+		showSymbol(1);
+		break;
+
+	case 'o':
+		showSymbol(2);
+		break;
+
+	case 'p':
+		showSymbol(3);
+		break;
+	}
+}
+
