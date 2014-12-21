@@ -82,6 +82,7 @@ void TapGesture::compute()
 
 void TapGesture::initParams()
 {
+
 	leaptap = leapZ = 0;
 	saveCoords = mFingerTipPosition;
 	saveCoordsVec.push_back(mFingerTipPosition);	
