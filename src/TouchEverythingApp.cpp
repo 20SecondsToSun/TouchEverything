@@ -53,7 +53,7 @@ private:
 
 void TouchEverythingApp::setup()
 {
-	setWindowSize(1000, 800);	
+	setWindowSize(1400, 800);	
 
 	loadGraphicsResources();
 	initLeapController();
@@ -89,7 +89,7 @@ void TouchEverythingApp::initLeapController()
 
 void TouchEverythingApp::initVirtualKeyboard()
 {
-	touchKeyBoard = new VirtualKeyboard(Vec2f(400.0f, 380.0f));
+	touchKeyBoard = new VirtualKeyboard(Vec2f(200.0f, 280.0f));
 	touchKeyBoard->initKeyboard();
 	touchKeyBoard->keyboardTouchSignal.connect( 
 		boost::bind(&TouchEverythingApp::keyboardTouchSignal, this) 
@@ -194,7 +194,7 @@ void TouchEverythingApp::leapTouchSignal()
 	}
 }
 
-bool TouchEverythingApp::checkCode( vector<string>& codes )
+bool TouchEverythingApp::checkCode(vector<string>& codes)
 {
 	if(touchKeyBoard->isNoneCode())
 		return false;
@@ -207,7 +207,6 @@ bool TouchEverythingApp::checkCode( vector<string>& codes )
 
 	return true;
 }
-
 
 void TouchEverythingApp::update()
 {
@@ -255,4 +254,4 @@ void TouchEverythingApp::shutdown()
 	delete touchKeyBoard;
 }
 
-CINDER_APP_NATIVE( TouchEverythingApp, RendererGl )
+CINDER_APP_NATIVE(TouchEverythingApp, RendererGl)

@@ -54,99 +54,85 @@ VirtualKeyboard::VirtualKeyboard(Vec2f _position)
 	
 	for (auto i = 0; i < lineLength1; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, to_string(i));
+		Button *btn = new Button(_simple, mFont, to_string(i));
 		btn->setScreenField(lineOffset1 + Vec2f(i * (_xOffset1 + _width), 0.0f) + shift_Y);		
 		buttonsMainKeyboard.push_back(btn);
 		buttonsSecondKeyboard.push_back(btn);
 	}
 
-	shift = new Button();
-	shift->setup(shiftTex0, mFont, SHIFT_KEY, false);
+	shift = new Button(shiftTex0, mFont, SHIFT_KEY, false);
 	shift->setScreenField(lineOffset4 - Vec2f(100.0f, 0.0f) + shift_Y);
 	buttonsMainKeyboard.push_back(shift);
 	
-	Button *backspaceBtn = new Button();
-	backspaceBtn->setup(backspaceBtnTex, mFont, BACK_KEY, false);
-	backspaceBtn->setScreenField(lineOffset1 + Vec2f(10.0f*(_xOffset1 + _width),0.0f) + shift_Y);	
+	Button *backspaceBtn = new Button(backspaceBtnTex, mFont, BACK_KEY, false);
+	backspaceBtn->setScreenField(lineOffset1 + Vec2f(10.0f * (_xOffset1 + _width),0.0f) + shift_Y);	
 	buttonsMainKeyboard.push_back(backspaceBtn);
 	buttonsSecondKeyboard.push_back( backspaceBtn );
 
 	for (size_t i = 0, ilen = secondLineCharacters->size(); i < 10; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, secondLineCharacters[i]);
-		btn->setScreenField(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);		
+		Button *btn = new Button(_simple, mFont, secondLineCharacters[i]);
+		btn->setScreenField(lineOffset2 + Vec2f(i * (_xOffset2 + _width), 0.0f) + shift_Y);		
 		buttonsMainKeyboard.push_back( btn );
 	}
 
 	for (size_t i = 0, ilen = secondLineCharacters2->size(); i < 10; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, secondLineCharacters2[i]);
-		btn->setScreenField(lineOffset2 + Vec2f(i*(_xOffset2 + _width), 0.0f) + shift_Y);		
+		Button *btn = new Button(_simple, mFont, secondLineCharacters2[i]);
+		btn->setScreenField(lineOffset2 + Vec2f(i * (_xOffset2 + _width), 0.0f) + shift_Y);		
 		buttonsSecondKeyboard.push_back( btn );
 	}
 
 	for (size_t i = 0, ilen = thirdLineCharacters->size(); i < 10; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, thirdLineCharacters[i]);
-		btn->setScreenField(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);		
+		Button *btn = new Button(_simple, mFont, thirdLineCharacters[i]);
+		btn->setScreenField(lineOffset3 + Vec2f(i * (_xOffset3 + _width), 0.0f) + shift_Y);		
 		buttonsMainKeyboard.push_back( btn );
 	}
 
 	for (size_t i = 0, ilen = thirdLineCharacters2->size(); i < 10; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, thirdLineCharacters2[i]);
-		btn->setScreenField(lineOffset3 + Vec2f(i*(_xOffset3 + _width), 0.0f) + shift_Y);		
+		Button *btn = new Button(_simple, mFont, thirdLineCharacters2[i]);
+		btn->setScreenField(lineOffset3 + Vec2f(i * (_xOffset3 + _width), 0.0f) + shift_Y);		
 		buttonsSecondKeyboard.push_back( btn );
 	}
 
 	for (size_t i = 0, ilen = fourthLineCharacters->size(); i < 9; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, fourthLineCharacters[i]);
-		btn->setScreenField(lineOffset4 + Vec2f(i*(_xOffset4 + _width), 0.0f) + shift_Y);		
+		Button *btn = new Button(_simple, mFont, fourthLineCharacters[i]);
+		btn->setScreenField(lineOffset4 + Vec2f(i * (_xOffset4 + _width), 0.0f) + shift_Y);		
 		buttonsMainKeyboard.push_back( btn );
 	}
 
 	for (size_t i = 0, ilen = fourthLineCharacters2->size(); i < 10; i++)
 	{
-		Button *btn = new Button();
-		btn->setup(_simple, mFont, fourthLineCharacters2[i]);
-		btn->setScreenField(lineOffset4 + Vec2f((i)*(_xOffset4 + _width), 0.0f)+ shift_Y - Vec2f(_xOffset4 + _width, 0.0f));		
+		Button *btn = new Button(_simple, mFont, fourthLineCharacters2[i]);
+		btn->setScreenField(lineOffset4 + Vec2f(i * (_xOffset4 + _width), 0.0f) + shift_Y - Vec2f(_xOffset4 + _width, 0.0f));		
 		buttonsSecondKeyboard.push_back( btn );
 	}
 
-	Button *dogBtn = new Button(), *spaceBtn = new Button(), *sendBtn = new Button(), *mailBtn = new Button(), *gmailBtn= new Button(), *yaBtn= new Button(), *ramBtn= new Button();
-	
-	changeKeyboardBtn = new Button();
-
-	changeKeyboardBtn->setup(changeKeyboardTex1, mFont, SPECIAL_SYMBOLS_KEY);
+	changeKeyboardBtn = new Button(changeKeyboardTex1, mFont, SPECIAL_SYMBOLS_KEY);
 	changeKeyboardBtn->setScreenField(lineOffset5 + Vec2f(0.0f * (_xOffset5 + _width) - 170.0f, 0.0f) + shift_Y);	
 	buttonsMainKeyboard.push_back(changeKeyboardBtn);
 	buttonsSecondKeyboard.push_back(changeKeyboardBtn);
 
-	dogBtn->setup(_simple, mFont, SOBAKA_KEY);
-	dogBtn->setScreenField(lineOffset5 + Vec2f(0.0f*(_xOffset5 + _width), 0.0f) + shift_Y);	
+	Button *dogBtn = new Button(_simple, mFont, SOBAKA_KEY);
+	dogBtn->setScreenField(lineOffset5 + Vec2f(0.0f * (_xOffset5 + _width), 0.0f) + shift_Y);	
 	buttonsMainKeyboard.push_back(dogBtn);
 	buttonsSecondKeyboard.push_back(dogBtn);
 
-	spaceBtn->setup(spaceBtnTex, mFont, SPACE_KEY, false);
-	spaceBtn->setScreenField(lineOffset5 + Vec2f((_xOffset5 + _width), 0.0f) + shift_Y);	
+	Button *spaceBtn = new Button(spaceBtnTex, mFont, SPACE_KEY, false);
+	spaceBtn->setScreenField(lineOffset5 + Vec2f(_xOffset5 + _width, 0.0f) + shift_Y);	
 	buttonsMainKeyboard.push_back(spaceBtn);
 	buttonsSecondKeyboard.push_back( spaceBtn );
 	 
-	sendBtn->setup(sendBtnTex, mFont, SEND_KEY, false);
-	Vec2f pos = lineOffset5 + Vec2f((_xOffset5  + _width), 0.0f) + shift_Y;
+	Button *sendBtn = new Button(sendBtnTex, mFont, SEND_KEY, false);
+	Vec2f pos = lineOffset5 + Vec2f(_xOffset5  + _width, 0.0f) + shift_Y;
 	sendBtn->setScreenField(pos+ Vec2f(_xOffset5 + spaceBtnTex.getWidth(), 0.0f));	
 	buttonsMainKeyboard.push_back(sendBtn);
-	buttonsSecondKeyboard.push_back( sendBtn );
+	buttonsSecondKeyboard.push_back(sendBtn);
 	
 	position = _position;
-
 	show();
 }
 

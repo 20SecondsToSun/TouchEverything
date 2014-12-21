@@ -1,26 +1,24 @@
 #include "Button.h"
 
-void Button::setup(Texture _tex, Font _font, string _char, bool _isText)
+Button::Button(const Texture& _tex, const Font& _font, const string& _char, const bool& _isText)
+	:texture(_tex),
+	text(_char),
+	font(_font),
+	isText(_isText),
+	code(_char),
+	overColor(Color::white())
 {
-	texture = _tex;
-	text = _char;
-	font = _font;
-	isText = _isText;
-	code = _char;
-
-	overColor = Color::white();
-
 	if (isText)
 	{
 		TextLayout simple;
 		simple.setFont(font);
 		simple.setColor(Color::black());
 		simple.addLine(_char);	
-		textTexture = Texture(simple.render(true, false ));	
+		textTexture = Texture(simple.render(true, false));	
 	}	
 }
 
-void Button::setScreenField(Vec2f vec)
+void Button::setScreenField(const Vec2f& vec)
 {
 	field = Rectf(vec.x, vec.y, vec.x + texture.getWidth(), vec.y + texture.getHeight());	
 }
@@ -42,17 +40,16 @@ void Button::draw()
 	gl::color(Color::black());
 
 	if (isText)
-	{
-		gl::pushMatrices();
-		gl::translate((texture.getWidth()-textTexture.getWidth())*0.5f, (texture.getHeight()-textTexture.getHeight())*0.5f - 5.0f);
-		gl::draw(textTexture);
-		gl::popMatrices();
+	{		
+		float halfW = (texture.getWidth() - textTexture.getWidth()) * 0.5f;
+		float halfH = (texture.getHeight() - textTexture.getHeight()) * 0.5f;		
+		gl::draw(textTexture, Vec2f(halfW, halfH - 5.0f));		
 	}
 
 	gl::popMatrices();
 }
 
-bool Button::contains(Vec2f mousePoint)
+bool Button::contains(const Vec2f& mousePoint) const
 {
 	return field.contains(mousePoint);
 }
@@ -71,7 +68,7 @@ string  Button::getBtnId()
 	return code;
 }
 
-void  Button::setBtnId(string value)
+void  Button::setBtnId(const string& value)
 {
 	if (isText)
 	{
