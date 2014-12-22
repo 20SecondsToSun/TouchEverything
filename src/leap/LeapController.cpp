@@ -78,6 +78,9 @@ void LeapController::setFinger3DPosition()
 
 void LeapController::update()
 {	
+	if (!checkGestureAllow())
+		return;
+
 	auto hands = leapFrame.hands();
 
 	for (auto handIter = hands.begin(); handIter != hands.end(); ++handIter)
@@ -92,10 +95,8 @@ void LeapController::update()
 			if (trackedPoint.isFinger())
 			{
 				setFinger3DPosition();
-				calculateFingerTipPosition();
-
-				if (checkGestureAllow())	
-					computeGesture();						
+				calculateFingerTipPosition();					
+				computeGesture();						
 			}			
 		}
 		else if (leapTouchMode == leapStates::DEFAULT)
