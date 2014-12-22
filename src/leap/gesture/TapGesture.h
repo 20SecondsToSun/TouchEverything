@@ -60,6 +60,5 @@ class TapGesture
 		ci::Vec2f				saveCoords;
 		bool					gestureOut;		
 		Leap::Vector			leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
-		void					initParams();
-		
+		void					initParams();		
 };

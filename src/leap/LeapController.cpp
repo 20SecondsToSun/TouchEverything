@@ -12,7 +12,7 @@ LeapController LeapController::LeapControllerState;
 
 void LeapController::setup()
 {	
-	hintFont = Font( loadFile(getAssetPath("fonts/Helvetica Neue Light.ttf")), 76 );
+	hintFont = Font(loadFile(getAssetPath("fonts/Helvetica Neue Light.ttf")), 76);
 	resetInitParams();
 
 	if (leapDevice && leapDevice->isConnected()) return;
@@ -44,23 +44,6 @@ void LeapController::setup()
 	leapTapParams.minXVelocity		= 80;
 	leapTapParams.minYVelocity		= 80;
 	leapTapParams.minZVelocity		= 8;
-
-	mParams = params::InterfaceGl::create( getWindow(), "App parameters", toPixels( Vec2i( 200, 400 ) ) );
-
-	mParams->addParam( "isExtended", &leapTapParams.isExtended);
-	mParams->addParam( "isStabilized", &leapTapParams.isStabilized);
-	mParams->addSeparator();
-	mParams->addParam( "minDistanceToTap", &leapTapParams.minDistanceToTap);
-	mParams->addParam( "minDistanceToHover", &leapTapParams.minDistanceToHover);
-	mParams->addSeparator();
-	mParams->addParam( "minXVelocity", &leapTapParams.minXVelocity);
-	mParams->addParam( "minYVelocity", &leapTapParams.minYVelocity);
-	mParams->addParam( "minZVelocity", &leapTapParams.minZVelocity);
-	mParams->addSeparator();
-	mParams->addParam( "maxSecondsToTap", &leapTapParams.maxSecondsToTap);
-	mParams->addSeparator();
-	mParams->addParam( "correctVecX", &correctVec.x);
-	mParams->addParam( "correctVecY", &correctVec.y);
 
 	buttonsArraySize = 6;	
 	buttonX1Record = buttonX2Record = false;
@@ -102,7 +85,7 @@ void LeapController::resetInitParams()
 	sleep(3);
 }
 
-void LeapController::sleep(int seconds)
+void LeapController::sleep(float seconds)
 {
 	GESTURE_ALLOW = false;
 	GESTURE_ALLOW_TIMER = seconds;
@@ -308,13 +291,12 @@ void LeapController::draw()
 	//Draw the interface
 	//mParams->draw();
 }
-void LeapController::hidePointer(  )
+void LeapController::hidePointer()
 {
 	isPointerHide = !isPointerHide;
 }
 
-
-void LeapController::drawGrid(  )
+void LeapController::drawGrid()
 {
 	float size = 500.0f, step = 50.0f;
 
@@ -322,7 +304,7 @@ void LeapController::drawGrid(  )
 
 	for(float i=-size; i<=size; i+=step) 
 	{
-		gl::drawLine( Vec3f(i, 0.0f, -size), Vec3f(i,	 0.0f, size) );
+		gl::drawLine( Vec3f(i, 0.0f, -size), Vec3f(i, 0.0f, size) );
 		gl::drawLine( Vec3f(-size, 0.0f, i), Vec3f(size, 0.0f, i) );
 	}
 
@@ -330,18 +312,18 @@ void LeapController::drawGrid(  )
 
 	for(float i=-size; i<=size; i+=step) 
 	{
-		gl::drawLine( Vec3f(i, -size, 0), Vec3f(i, size, 0.0f) );
-		gl::drawLine( Vec3f(-size, i, 0.0f), Vec3f(size, i, 0.0f) );
+		gl::drawLine(Vec3f(i, -size, 0), Vec3f(i, size, 0.0f) );
+		gl::drawLine(Vec3f(-size, i, 0.0f), Vec3f(size, i, 0.0f) );
 	}
 }
 
-void LeapController::calcTouchPlanes( )
+void LeapController::calcTouchPlanes()
 {
 	calcTouchPlane(planes[0], LeapMotion::toVec3f(planePoints[0]), LeapMotion::toVec3f(planePoints[1]), LeapMotion::toVec3f(planePoints[2]), Vec3f::zero());
 	tapGesture.setPlanes(planes[0]);	
 }
 
-void LeapController::calcTouchPlane(PlaneCoeff& planes, Vec3f point1, Vec3f point2, Vec3f point3, Vec3f point4, int sign )
+void LeapController::calcTouchPlane(PlaneCoeff& planes, Vec3f point1, Vec3f point2, Vec3f point3, Vec3f point4, int sign)
 {		
 	float x1 = point1.x;
 	float y1 = point1.y;
@@ -414,7 +396,7 @@ void LeapController::deleteLastButton()
 		buttonIndex--;	
 }
 
-void LeapController::swapTouchMode( )
+void LeapController::swapTouchMode()
 {
 	if( leapTouchMode == leapStates::DEFAULT)
 	{
@@ -426,7 +408,7 @@ void LeapController::swapTouchMode( )
 	}
 }
 
-void LeapController::setDebugMode( )
+void LeapController::setDebugMode()
 {
 	if( leapTouchMode == leapStates::DEBUG)
 	{
@@ -438,7 +420,7 @@ void LeapController::setDebugMode( )
 	}	
 }
 
-Vec2f LeapController::warpPointable( const Leap::Pointable& p )
+Vec2f LeapController::warpPointable(const Leap::Pointable& p)
 {	
 	Vec3f result	= Vec3f::zero();
 	if ( leapDevice ) {
@@ -451,12 +433,12 @@ Vec2f LeapController::warpPointable( const Leap::Pointable& p )
 	return result.xy();
 }
 
-void LeapController::onFrame( Leap::Frame frame )
+void LeapController::onFrame(Leap::Frame frame)
 {
 	leapFrame = frame;
 }
 
-void LeapController::shutdown( )
+void LeapController::shutdown()
 {
 }
 
@@ -464,7 +446,6 @@ ci::Vec2f LeapController::getTouchPosition()
 {
 	return saveCoordsVec[saveCoordsVec.size()-1];
 }
-
 
 void LeapController::keyDown( KeyEvent event )
 {

@@ -36,9 +36,7 @@ namespace touchEvrth
 		}
 
 		void viewTouch(Vec2f touchPos) override
-		{
-			int index = getTouchCellIndex(touchPos);
-
+		{			
 			codes.clear();
 			for (size_t i = 0; i < leap().saveCoordsVec.size(); i++)
 			{
