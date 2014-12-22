@@ -89,7 +89,7 @@ namespace vrKeyboard
 		bool isShiftDown, isKeyBoardChangeDown;
 
 		Texture shiftTex1, shiftTex0;
-		Texture changeKeyboardTex1, changeKeyboardTex2;
+		Texture changeKeyboardTex1;
 
 		Button *shift, *changeKeyboardBtn;
 		Vec2f  position;

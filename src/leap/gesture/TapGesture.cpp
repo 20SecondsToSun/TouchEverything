@@ -82,7 +82,6 @@ void TapGesture::compute()
 
 void TapGesture::initParams()
 {
-
 	leaptap = leapZ = 0;
 	saveCoords = mFingerTipPosition;
 	saveCoordsVec.push_back(mFingerTipPosition);	
@@ -95,3 +94,8 @@ Leap::Vector TapGesture::leapToWorld(Leap::Vector leapPoint, Leap::InteractionBo
 	normalized += Leap::Vector(0.5, 0, 0.5); //recenter origin
 	return normalized * 100.0; //scale
 }
+
+void TapGesture::setPlanes(MathTools::PlaneCoeff _planes)
+{
+	planes[0] = _planes;
+};

@@ -37,10 +37,11 @@ namespace touchEvrth
 
 		void viewTouch(Vec2f touchPos) override
 		{			
-			codes.clear();
-			for (size_t i = 0; i < leap().saveCoordsVec.size(); i++)
+			/*codes.clear();
+
+			for (size_t i = 0; i < leap().getSaveCoordsVec().size(); i++)
 			{
-				Vec2f vec = leap().saveCoordsVec[i];
+				Vec2f vec = leap().getSaveCoordsVec()[i];
 				vector<Vec2f>  pointsToCheck;
 				pointsToCheck.push_back(vec);
 				pointsToCheck.push_back(Vec2f(-pointerHalfSize, -pointerHalfSize) + vec);
@@ -64,7 +65,7 @@ namespace touchEvrth
 					outputText = outputText.substr(0, outputText.size()-1);
 				else if (codes[i].length() == 1)
 					outputText += codes[i];	
-			}	
+			}	*/
 		}
 	private:
 		VirtualKeyboard *touchKeyBoard;

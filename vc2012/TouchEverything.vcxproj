@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src\virtualKeyboard;..\src\utils;..\src\buttons;..\src\mode</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src\virtualKeyboard;..\src\utils;..\src\buttons;..\src\mode;..\src\debugView</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="..\blocks\LeapMotion\src\Cinder-LeapMotion.cpp" />
     <ClCompile Include="..\src\buttons\Button.cpp" />
+    <ClCompile Include="..\src\debugView\DebugView.cpp" />
     <ClCompile Include="..\src\leap\gesture\TapGesture.cpp" />
     <ClCompile Include="..\src\leap\LeapController.cpp" />
     <ClCompile Include="..\src\TouchEverythingApp.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="..\blocks\LeapMotion\src\LeapMath.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\buttons\Button.h" />
+    <ClInclude Include="..\src\debugView\DebugView.h" />
     <ClInclude Include="..\src\leap\gesture\TapGesture.h" />
     <ClInclude Include="..\src\leap\LeapController.h" />
     <ClInclude Include="..\src\mode\ITouchViewOnGrid.h" />
@@ -127,6 +129,8 @@
     <ClInclude Include="..\src\mode\TouchText.h" />
     <ClInclude Include="..\src\mode\TouchImage.h" />
     <ClInclude Include="..\src\mode\TouchViewOnGrid.h" />
+    <ClInclude Include="..\src\utils\DrawTools.h" />
+    <ClInclude Include="..\src\utils\MathTools.h" />
     <ClInclude Include="..\src\utils\StringTools.h" />
     <ClInclude Include="..\src\utils\TextTools.h" />
     <ClInclude Include="..\src\virtualKeyboard\VirtualKeyboard.h" />

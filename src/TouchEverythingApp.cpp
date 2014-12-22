@@ -4,6 +4,7 @@
 #include "TouchText.h"
 #include "TouchImage.h"
 #include "TouchKeyboard.h"
+#include "DebugView.h"
 
 using namespace ci;
 using namespace ci::gl;
@@ -29,6 +30,10 @@ private:
 	TouchText	    *textView;
 	TouchImage	    *imageView;
 	TouchKeyboard   *keyboardView;
+
+	LeapController   *leap;
+
+	DebugView *debugView;	
 };
 
 void TouchEverythingApp::setup()
@@ -37,12 +42,14 @@ void TouchEverythingApp::setup()
 	gl::enableAlphaBlending();
 	initLeapController();
 	initTouchViews();	
+
+	debugView = new DebugView(leap);
 }
 
 void TouchEverythingApp::initLeapController()
 {
-	leap().setup();
-	leap().leapTouchSignal.connect(boost::bind(&TouchEverythingApp::leapTouchSignal, this));
+	leap = new LeapController();
+	leap->leapTouchSignal.connect(boost::bind(&TouchEverythingApp::leapTouchSignal, this));
 }
 
 void TouchEverythingApp::initTouchViews()
@@ -62,7 +69,7 @@ void TouchEverythingApp::setMode(TouchViewOnGrid *_view)
 
 void TouchEverythingApp::leapTouchSignal()
 {
-	Vec2f vec = leap().getTouchPosition();
+	Vec2f vec = leap->getTouchPosition();
 	view->viewTouch(vec);
 }
 
@@ -70,12 +77,12 @@ void TouchEverythingApp::draw()
 {
 	gl::clear(Color::hex(0x222222));
 	view->draw();
-	leap().draw();
+	debugView->draw();
 }
 
 void TouchEverythingApp::keyDown(KeyEvent event)
 {
-	switch ( event.getCode() )
+	switch (event.getCode())
 	{
 	case KeyEvent::KEY_q:
 		quit();
@@ -95,7 +102,7 @@ void TouchEverythingApp::keyDown(KeyEvent event)
 
 	case KeyEvent::KEY_r:
 		view->reset();
-		break;
+		break;	
 	}
 }
 
@@ -104,6 +111,7 @@ void TouchEverythingApp::shutdown()
 	delete textView;
 	delete imageView;
 	delete keyboardView;
+	delete leap;
 }
 
 CINDER_APP_NATIVE(TouchEverythingApp, RendererGl)

@@ -32,17 +32,12 @@ VirtualKeyboard::VirtualKeyboard(Vec2f _position)
 
 	Texture backspaceBtnTex	= Texture(loadImage(loadAsset("keyboard/backBtn.png")));
 	Texture _simple		    = Texture(loadImage(loadAsset("keyboard/_simpleBtn.png")));	
-	Texture	yaBtnTex		= Texture(loadImage(loadAsset("keyboard/ya.png")));
-	Texture ramBtnTex		= Texture(loadImage(loadAsset("keyboard/ram.png")));
-	Texture mailBtnTex		= Texture(loadImage(loadAsset("keyboard/mail.png")));
-	Texture gmailBtnTex		= Texture(loadImage(loadAsset("keyboard/gmail.png")));	
 	Texture sendBtnTex		= Texture(loadImage(loadAsset("keyboard/send.png")));
 			shiftTex1		= Texture(loadImage(loadAsset("keyboard/shift.png")));
 			shiftTex0		= Texture(loadImage(loadAsset("keyboard/shift0.png")));
-	Texture spaceBtnTex		= Texture(loadImage(loadAsset("keyboard2/k3.png")));
-	changeKeyboardTex1		= Texture(loadImage(loadAsset("keyboard2/k2.png")));
-	changeKeyboardTex2		= Texture(loadImage(loadAsset("keyboard2/k2.png")));
-
+	Texture spaceBtnTex		= Texture(loadImage(loadAsset("keyboard/k3.png")));
+	changeKeyboardTex1		= Texture(loadImage(loadAsset("keyboard/k2.png")));
+	
 	Vec2f shift_Y= Vec2f::zero();
 	float _width = 86.0f;
 	

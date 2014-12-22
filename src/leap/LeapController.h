@@ -3,14 +3,10 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Timeline.h"
 #include "cinder/Timer.h"
-#include "cinder/Rand.h"
-#include "cinder/Camera.h"
-#include "cinder/MayaCamUI.h"
-#include "cinder/params/Params.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/ImageIo.h"
 #include "Cinder-LeapMotion.h"
 #include "gesture/TapGesture.h"
+#include "MathTools.h"
+#include "DrawTools.h"
 
 using namespace std;
 using namespace ci;
@@ -37,55 +33,45 @@ namespace leapStates
 	const string DEBUG		   =  "DEBUG";
 }
 
-struct buttonStruct
-{
-	Vec3f point1;
-	Vec3f point2;
-};
-
 class LeapController 
 {	  
 public:
-	signal<void(void)> leapTouchSignal;
 
-	void setup(); 
-	void update();
-	void draw();
-	void shutdown();	
-
-	void resetInitParams();
-	void sleep(float seconds);
-	Vec2f getTouchPosition();
-
-	static LeapController* Instance() 
+	struct buttonStruct
 	{
-		return &LeapControllerState;
+		Vec3f point1;
+		Vec3f point2;
 	};
 
-	vector<Vec2f> saveCoordsVec;//!!
+	signal<void(void)> leapTouchSignal;
+	
+	LeapController();
+	~LeapController();
 
-protected:
-	LeapController(){};
+	void update();
+	void shutdown();	
+
+	void sleep(float seconds);
+	Vec2f getTouchPosition();
+	vector<Vec2f> getSaveCoordsVec();
+
+	Vec3f getFinger3DPosition();
+	Vec2f getFingerTipPosition();
+	MathTools::PlaneCoeff getPlane();
+	int getBtnIndex();
+	buttonStruct* getBtnVec();
 
 private:
-	static LeapController LeapControllerState;
 
-	Leap::InteractionBox		iBox;
 	Leap::Vector				leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
 	LeapMotion::DeviceRef		leapDevice;
 	Leap::Frame					leapFrame;
 	Leap::Pointable				trackedPoint;
-	Leap::Vector				planePoints[6];
+	Leap::Vector				planePoints[3];
 
 	LeapTapParams leapTapParams;
 	TapGesture tapGesture;
 
-	MayaCamUI mMayaCam;	
-	
-	Vec2f correctVec;
-	bool isPointerHide;	
-
-	bool GESTURE_ALLOW;	
 	int GESTURE_ALLOW_TIMER;
 	Timer gestureTimer;
 	Vec2f mFingerTipPosition;
@@ -94,45 +80,34 @@ private:
 	
 	string leapTouchMode; 
 	Vec3f finger3DPosition;
-	bool buttonX1Record, buttonX2Record;
 	int	buttonIndex;
 
 	void onFrame(Leap::Frame frame);
 	Vec2f warpPointable(const Leap::Pointable& p);
 
-	int	messageToShow;
-	int	buttonsArraySize;
-	Anim<float>	alphasArray[6];
-	string buttonNames[6];
-	PlaneCoeff planes[6];
-
+	MathTools::PlaneCoeff plane;
 	buttonStruct buttonVec[6];
-	Font hintFont;
-	vector<Texture>	texArray;
-
-	void setDebugMode();
+	
 	void calcTouchPlanes();
-	void calcTouchPlane(PlaneCoeff& planeCoeef, Vec3f point1, Vec3f point2, Vec3f point3, Vec3f point4, int sign = 1);
-	void setPlanePointToRecord(int pointIndex);
 	void recordPlanePoint();
 	void swapTouchMode();	
 	Vec2f getCoords();
-	void setButtonX1();
-	void setButtonX2();
+	void setButtonPoint1();
+	void setButtonPoint2();
 	void deleteLastButton();
-	void hidePointer();
-	void showSymbol(int i);		
 	void setGestureAllowTimer();
 	void calculateFingerTipPosition();
-	void fingerTapFire();
-	void drawGrid();	
+	void fingerTapFire();	
+	void computeGesture();
 
-	void checkGestureAllow();
+	bool checkGestureAllow();
 	void setTrackedPoint(Leap::FingerList fingers);
 	void setFinger3DPosition();	
 
-	void mouseDown(MouseEvent event);
-	void mouseDrag(MouseEvent event);	
+	void setSignals();
+	
 	void keyDown(KeyEvent event);
+
+	connection updateCon;	
+	connection keyDownCon;
 };
-inline LeapController&	leap() {return *LeapController::Instance();};

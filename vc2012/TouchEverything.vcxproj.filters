@@ -37,6 +37,9 @@
     <Filter Include="Source Files\mode">
       <UniqueIdentifier>{76d0f9c1-9c42-43d4-a91a-2a4d7dd234e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\debugView">
+      <UniqueIdentifier>{3764723d-5e65-4b9a-840f-42d4cc026202}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\TouchEverythingApp.cpp">
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="..\src\virtualKeyboard\VirtualKeyboard.cpp">
       <Filter>Source Files\virtualKeyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\debugView\DebugView.cpp">
+      <Filter>Source Files\debugView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +115,15 @@
     </ClInclude>
     <ClInclude Include="..\src\mode\TouchViewOnGrid.h">
       <Filter>Source Files\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\MathTools.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\DrawTools.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\debugView\DebugView.h">
+      <Filter>Source Files\debugView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
