@@ -39,8 +39,8 @@ struct buttonStruct
 
 class LeapController 
 {	  
-  public:
-	
+public:
+
 	void							setup(); 
 	void							update();
 	void							shutdown();	
@@ -50,8 +50,8 @@ class LeapController
 	void							sleep(int seconds);
 
 	static LeapController* Instance() {
-			return &LeapControllerState;
-		};
+		return &LeapControllerState;
+	};
 
 	void							calcTouchPlanes( );
 	void							calcTouchPlane(PlaneCoeff& planeCoeef, ci::Vec3f point1, ci::Vec3f point2, ci::Vec3f point3 , ci::Vec3f point4, int sign = 1);
@@ -72,76 +72,79 @@ class LeapController
 	ci::params::InterfaceGlRef		mParams;	
 	ci::Vec2f						correctVec;
 
-	 void							setButtonX1();
-	 void							setButtonX2();
-	 void							deleteLastButton();
+	void							setButtonX1();
+	void							setButtonX2();
+	void							deleteLastButton();
 
-	 void							hidePointer( );
+	void							hidePointer( );
 
-	 bool							isPointerHide;
+	bool							isPointerHide;
 
-	 void							showSymbol(int i);
+	void							showSymbol(int i);
+
+
+	ci::Vec2f						getTouchPosition();
 
 
 protected:
 	LeapController(){};
-	
- private:
-	 static LeapController		LeapControllerState;
 
-	 void 						onFrame( Leap::Frame frame );	
-	 void						setGestureAllowTimer();
-	 void						calculateFingerTipPosition();
-	 void						fingerTapFire();
-	 void						drawGrid( );
+private:
+	static LeapController		LeapControllerState;
 
-	 ci::Vec2f					warpPointable( const Leap::Pointable& p );
-	 Leap::InteractionBox		iBox;
-	 Leap::Vector				leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
+	void 						onFrame( Leap::Frame frame );	
+	void						setGestureAllowTimer();
+	void						calculateFingerTipPosition();
+	void						fingerTapFire();
+	void						drawGrid( );
 
-	 bool						GESTURE_ALLOW;	
-	 int						GESTURE_ALLOW_TIMER;
-	
-	 LeapMotion::DeviceRef		leapDevice;
-	 Leap::Frame				leapFrame;
-	
-	 ci::Timer					gestureTimer;
-	 ci::Vec2f					mFingerTipPosition;
+	ci::Vec2f					warpPointable( const Leap::Pointable& p );
+	Leap::InteractionBox		iBox;
+	Leap::Vector				leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
 
-	 int						trackedTipID;
-	
-	 int						indexToSet;
-	 Leap::Pointable			trackedPoint;
-	 std::string				leapTouchMode; 
-	 ci::Vec3f					finger3DPosition;
+	bool						GESTURE_ALLOW;	
+	int						GESTURE_ALLOW_TIMER;
 
-	 LeapTapParams				leapTapParams;
+	LeapMotion::DeviceRef		leapDevice;
+	Leap::Frame				leapFrame;
 
-	 bool						buttonX1Record, buttonX2Record;
-	 int						buttonIndex;	 
+	ci::Timer					gestureTimer;
+	ci::Vec2f					mFingerTipPosition;
 
-	 TapGesture					tapGesture;
+	int						trackedTipID;
 
-	 void						checkGestureAllow();
-	 void						setTrackedPoint(Leap::FingerList fingers);
-	 void						setFinger3DPosition();
+	int						indexToSet;
+	Leap::Pointable			trackedPoint;
+	std::string				leapTouchMode; 
+	ci::Vec3f					finger3DPosition;
 
-	 int						messageToShow;
+	LeapTapParams				leapTapParams;
 
-	 int						buttonsArraySize;
-	 ci::Anim<float>			alphasArray[6];
-	 std:: string				buttonNames[6];
-	 PlaneCoeff					planes[6];
-	 Leap::Vector				planePoints[6];
-	 buttonStruct				buttonVec[6];
+	bool						buttonX1Record, buttonX2Record;
+	int						buttonIndex;	 
 
-	 ci::Font					hintFont;
+	TapGesture					tapGesture;
 
-	 std::vector<ci::gl::Texture>	texArray;
+	void						checkGestureAllow();
+	void						setTrackedPoint(Leap::FingerList fingers);
+	void						setFinger3DPosition();
 
-	 void mouseDown( ci::app::MouseEvent event );
-	 void mouseDrag( ci::app::MouseEvent event);	
-	 void keyDown( ci::app::KeyEvent event );
+	int						messageToShow;
+
+	int						buttonsArraySize;
+	ci::Anim<float>			alphasArray[6];
+	std:: string				buttonNames[6];
+	PlaneCoeff					planes[6];
+	Leap::Vector				planePoints[6];
+	buttonStruct				buttonVec[6];
+
+	ci::Font					hintFont;
+
+	std::vector<ci::gl::Texture>	texArray;
+
+	void mouseDown( ci::app::MouseEvent event );
+	void mouseDrag( ci::app::MouseEvent event);	
+	void keyDown( ci::app::KeyEvent event );
 
 };
 

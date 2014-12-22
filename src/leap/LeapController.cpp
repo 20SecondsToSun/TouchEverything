@@ -460,6 +460,12 @@ void LeapController::shutdown( )
 {
 }
 
+ci::Vec2f LeapController::getTouchPosition()
+{
+	return saveCoordsVec[saveCoordsVec.size()-1];
+}
+
+
 void LeapController::keyDown( KeyEvent event )
 {
 	int index = 0;

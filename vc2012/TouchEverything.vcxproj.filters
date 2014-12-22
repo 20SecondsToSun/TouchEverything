@@ -34,6 +34,9 @@
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{f1e9422e-04f0-47d1-a786-55183de8e596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mode">
+      <UniqueIdentifier>{76d0f9c1-9c42-43d4-a91a-2a4d7dd234e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\TouchEverythingApp.cpp">
@@ -91,6 +94,21 @@
     </ClInclude>
     <ClInclude Include="..\src\virtualKeyboard\VirtualKeyboard.h">
       <Filter>Source Files\virtualKeyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mode\TouchKeyboard.h">
+      <Filter>Source Files\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mode\TouchText.h">
+      <Filter>Source Files\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mode\TouchImage.h">
+      <Filter>Source Files\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mode\ITouchViewOnGrid.h">
+      <Filter>Source Files\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mode\TouchViewOnGrid.h">
+      <Filter>Source Files\mode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src\virtualKeyboard;..\src\utils;..\src\buttons</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\blocks\LeapMotion\src;..\src\leap;..\src\virtualKeyboard;..\src\utils;..\src\buttons;..\src\mode</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -122,6 +122,11 @@
     <ClInclude Include="..\src\buttons\Button.h" />
     <ClInclude Include="..\src\leap\gesture\TapGesture.h" />
     <ClInclude Include="..\src\leap\LeapController.h" />
+    <ClInclude Include="..\src\mode\ITouchViewOnGrid.h" />
+    <ClInclude Include="..\src\mode\TouchKeyboard.h" />
+    <ClInclude Include="..\src\mode\TouchText.h" />
+    <ClInclude Include="..\src\mode\TouchImage.h" />
+    <ClInclude Include="..\src\mode\TouchViewOnGrid.h" />
     <ClInclude Include="..\src\utils\StringTools.h" />
     <ClInclude Include="..\src\utils\TextTools.h" />
     <ClInclude Include="..\src\virtualKeyboard\VirtualKeyboard.h" />
