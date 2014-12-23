@@ -58,7 +58,7 @@ void TouchEverythingApp::initTouchViews()
 	imageView    = new TouchImage(leap);
 	keyboardView = new TouchKeyboard();
 
-	setMode(imageView);
+	setMode(keyboardView);
 }
 
 void TouchEverythingApp::setMode(TouchViewOnGrid *_view)

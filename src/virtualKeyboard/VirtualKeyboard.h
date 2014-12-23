@@ -49,7 +49,7 @@ namespace vrKeyboard
 
 		static KeyEvent imitate_ENTER_KEY_EVENT() ;
 		static KeyEvent imitate_BACKSPACE_KEY_EVENT();
-		static MouseEvent inititateMouseEvent(Vec2f vec);
+		static MouseEvent inititateMouseEvent(Vec2i vec);
 
 		bool isMailCode() const;
 		bool isBackCode() const;

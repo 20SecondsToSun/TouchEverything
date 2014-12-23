@@ -3,12 +3,12 @@
 using namespace std;
 using namespace ci;
 using namespace ci::app;
-using namespace leapGestures;
 using namespace LeapMotion;
+using namespace touchEvrth;
 
 LeapController::LeapController():leapTouchMode(leapStates::DEBUG)
 {	
-	leapDevice 	= Device::create();
+	leapDevice 	= LeapMotion::Device::create();
 	leapDevice->connectEventHandler(&LeapController::onFrame, this);
 
 	setSignals();
@@ -29,7 +29,7 @@ void LeapController::setSignals()
 
 void LeapController::sleep(float seconds)
 {
-	GESTURE_ALLOW_TIMER = seconds;
+	GESTURE_SLEEP_TIME = seconds;
 	gestureTimer.start();
 }
 
@@ -37,7 +37,7 @@ bool LeapController::checkGestureAllow()
 {
 	if(!gestureTimer.isStopped())
 	{
-		if(gestureTimer.getSeconds() >= GESTURE_ALLOW_TIMER)
+		if(gestureTimer.getSeconds() >= GESTURE_SLEEP_TIME)
 		{
 			gestureTimer.stop();
 			return true;
@@ -112,16 +112,16 @@ void LeapController::fingerTapFire()
 {	
 	setTouchedButtonsIndex();// if we have that ones
 	leapTouchSignal();	
-	sleep(0.85);
+	sleep(0.75f);
 }
 
 void LeapController::setTouchedButtonsIndex()
 {
 	touchedIndex = -1;
 
-	for (int i = 0; i < buttonVec.size(); i++)
+	for (size_t i = 0; i < buttonVec.size(); i++)
 	{
-		Vec3f v = LeapMotion::toVec3f(trackedPoint.stabilizedTipPosition());
+		Vec3f v = toVec3f(trackedPoint.stabilizedTipPosition());
 		buttonStruct b = buttonVec[i];
 
 		if(v.x > b.point1.x && v.y < b.point1.y &&
@@ -140,12 +140,12 @@ int LeapController::getTouchedButtonsIndex()
 
 void LeapController::setButtonPoint1()
 {
-	currentButton.point1 = LeapMotion::toVec3f(trackedPoint.stabilizedTipPosition());	
+	currentButton.point1 = toVec3f(trackedPoint.stabilizedTipPosition());	
 }
 
 void LeapController::setButtonPoint2()
 {
-	currentButton.point2  = LeapMotion::toVec3f(trackedPoint.stabilizedTipPosition());	
+	currentButton.point2  = toVec3f(trackedPoint.stabilizedTipPosition());	
 }
 
 void LeapController::pushButtonToVec()
@@ -170,11 +170,11 @@ void LeapController::recordPlanePoint()
 
 void LeapController::calcTouchPlanes()
 {
-	mathTools().calcTouchPlane(plane,
-		LeapMotion::toVec3f(planePoints[0]),
-		LeapMotion::toVec3f(planePoints[1]),
-		LeapMotion::toVec3f(planePoints[2]), Vec3f::zero());
+	Vec3f p1 = toVec3f(planePoints[0]);
+	Vec3f p2 = toVec3f(planePoints[1]);
+	Vec3f p3 = toVec3f(planePoints[2]);
 
+	mathTools().calcTouchPlane(plane, p1, p2, p3, Vec3f::zero());
 	tapGesture.setPlane(plane);	
 }
 

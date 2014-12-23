@@ -95,7 +95,7 @@ void DebugView::drawButtonsControlPoints()
 	float sphereSize = 4.0f;
 	vector<LeapController::buttonStruct> buttonVec = leap->getBtnVec();
 
-	for (int i = 0; i < buttonVec.size(); i++)
+	for (size_t i = 0; i < buttonVec.size(); i++)
 	{
 		drawSphere(buttonVec[i].point1, sphereSize);
 		drawSphere(buttonVec[i].point2, sphereSize);

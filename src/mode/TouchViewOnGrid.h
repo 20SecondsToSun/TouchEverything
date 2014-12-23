@@ -35,7 +35,7 @@ namespace touchEvrth
 			int i = (int)(touchPos.x / deltaX) + 1;
 			int j = (int)(touchPos.y / deltaY) + 1;
 
-			int index = i + (j - 1) * partX;
+			int index = i + (j - 1) * (int)partX;
 
 			return index;
 		}			

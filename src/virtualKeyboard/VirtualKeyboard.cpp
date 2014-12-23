@@ -273,7 +273,7 @@ KeyEvent VirtualKeyboard::imitate_BACKSPACE_KEY_EVENT()
 	return key;
 }
 
-MouseEvent VirtualKeyboard::inititateMouseEvent(Vec2f _vec)
+MouseEvent VirtualKeyboard::inititateMouseEvent(Vec2i _vec)
 {
 	unsigned int k = 1;
 	float r = 1.0f;

@@ -33,7 +33,7 @@ namespace touchEvrth
 			Texture tx = textTools().getTextField(outputText, &font, Color::white());
 
 			color(Color::white());
-			gl::draw(tx, Vec2f(0.5 * (getWindowWidth() - tx.getWidth()), 15.0f));
+			gl::draw(tx, Vec2f(0.5f * (getWindowWidth() - tx.getWidth()), 15.0f));
 		}
 
 		void reset() override

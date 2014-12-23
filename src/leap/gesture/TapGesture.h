@@ -6,52 +6,59 @@
 
 using namespace ci;
 using namespace std;
+using namespace Leap;
 
-class TapGesture 
+namespace touchEvrth
 {
-public:
-	TapGesture()
+	namespace tapParams
 	{
-		leapZ = 0;
-		leaptap = 0;		
-		saveseconds = 0;
-		gestureOut = true;
-		isExtended = false;
-		isStabilized = true;
-		maxSecondsToTap = 0.65f;
-		minDistanceToHover = 25.5;
-		minDistanceToTap = 20;
-		minXVelocity = 80;
-		minYVelocity = 80;
-		minZVelocity = 8;
+		static const float  MIN_DISTANCE_HOVER = 25.5f;
+		static const float  MIN_DISTANCE_TAP = 20.0f;
+		static const float  MAX_GESTURE_TIME = 0.65f;
+		static const float  SO_CLOSE_DISTANCE = 4.0f;
+
+		static const float  MIN_X_VELOCITY = 80.0f;
+		static const float  MIN_Y_VELOCITY = 80.0f;
+		static const float  MIN_Z_VELOCITY = 8.0f;
+
+		static const float  IS_EXTENDED = false;
+		static const float  IS_STABILIZED = true;
+
+		static const int  MIN_TAP0_FRAMES = 5;
 	}
 
-	bool isFired(Vec3f, Leap::Pointable, Vec2f, Leap::InteractionBox);
+	class TapGesture 
+	{
+	public:
+		TapGesture():tap1(0), tap0(0), startTapSec(0)
+		{
 
-	Leap::Pointable geTrackedPoint(Leap::FingerList fingers);
-	Vec3f getFinger3DPosition(Leap::Pointable trackedPoint);
+		}
 
-	Vec2f getPointPosition();
-	void setPlane(MathTools::PlaneCoeff planes);
+		bool isFired(Vec3f, Pointable, Vec2f, InteractionBox);
 
-private:
+		Pointable geTrackedPoint(FingerList fingers);
+		Vec3f getFinger3DPosition(Pointable trackedPoint);
 
-	MathTools::PlaneCoeff plane;		
-	
-	int	leaptap, leapZ;
-	float saveZ, saveseconds;
-	Vec2f saveCoords;
-	bool gestureOut;
-	void initParams(Vec2f value);	
+		Vec2f getPointPosition();
+		void setPlane(MathTools::PlaneCoeff planes);
 
-	Leap::Vector leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
+	private:
 
-	bool isExtended;
-	bool isStabilized;
-	float minDistanceToHover;
-	float minDistanceToTap;
-	float minXVelocity;
-	float minYVelocity;
-	float minZVelocity;
-	float maxSecondsToTap;
-};
+		MathTools::PlaneCoeff plane;	
+
+		Vector fingerVelocity, fingerPosition;
+		Vec2f touchApplicantPosition;
+
+		float fDistanceToPlane;
+		int	tap0, tap1;
+		double lastTapZ, startTapSec;
+		
+		bool isGestureTimeOver();
+		bool isVelocityXYLimit();
+		bool isFastDetectionConditions();
+		bool isFinalGesturePartSatisfy();
+		void resetParams();	
+		Vector leapToWorld(Vector leapPoint, InteractionBox iBox);			
+	};
+}
