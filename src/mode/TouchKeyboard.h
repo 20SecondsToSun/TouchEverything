@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "TouchViewOnGrid.h"
 #include "VirtualKeyboard.h"
+#include "TextTools.h"
 
 using namespace vrKeyboard;
 
@@ -15,7 +16,9 @@ namespace touchEvrth
 
 		TouchKeyboard():outputText("")
 		{
-			touchKeyBoard = new VirtualKeyboard(Vec2f(200.0f, 280.0f));
+			font = Font(loadFile(getAssetPath("fonts/4131341.ttf")), 65);
+
+			touchKeyBoard = new VirtualKeyboard(Vec2f(100.0f, 140.0f));
 			touchKeyBoard->initKeyboard();			
 		}
 
@@ -27,11 +30,16 @@ namespace touchEvrth
 		void draw() override
 		{
 			touchKeyBoard->draw();
+			Texture tx = textTools().getTextField(outputText, &font, Color::white());
+
+			color(Color::white());
+			gl::draw(tx, Vec2f(0.5 * (getWindowWidth() - tx.getWidth()), 15.0f));
 		}
 
 		void reset() override
 		{
 			outputText = "";
+			setWindowSize(1250, 620);			
 		}
 
 		void viewTouch(Vec2f touchPos) override
@@ -49,6 +57,7 @@ namespace touchEvrth
 
 	private:
 		VirtualKeyboard *touchKeyBoard;	
-		string outputText;			
+		string outputText;	
+		Font font;
 	};
 }

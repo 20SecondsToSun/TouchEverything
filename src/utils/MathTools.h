@@ -15,10 +15,10 @@ public:
 		float B; 
 		float C; 
 		float D;
-		ci::Vec3f point0;
-		ci::Vec3f point1; 
-		ci::Vec3f point2;
-		ci::Vec3f point3;
+		Vec3f point0;
+		Vec3f point1; 
+		Vec3f point2;
+		Vec3f point3;
 	};
 
 	static MathTools& getInstance()
@@ -56,6 +56,12 @@ public:
 		planes.B = z1 * (x2 - x3)  + z2 * (x3 - x1) + z3 *(x1 - x2);
 		planes.C = x1 * (y2 - y3)  + x2 * (y3 - y1) + x3 *(y1 - y2);
 		planes.D = -(x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1));
+	}
+	
+	float distanceToPlane(PlaneCoeff plane, Vec3f v)
+	{
+		return abs(plane.A * v.x + plane.B * v.y + plane.C * v.z + plane.D)/
+			sqrt(plane.A * plane.A + plane.B * plane.B + plane.C * plane.C);
 	}
 };
 

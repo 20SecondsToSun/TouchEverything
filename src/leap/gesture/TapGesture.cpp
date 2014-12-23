@@ -2,65 +2,51 @@
 
 using namespace std;
 using namespace ci;
-using namespace ci::app;
-	
-void TapGesture::compute()
-{
-	isFired = false;	
-	int   planeNum = 0;
-	float distance = abs(planes[planeNum].A*finger3DPosition.x + 
-							planes[planeNum].B*finger3DPosition.y +
-							planes[planeNum].C*finger3DPosition.z + 
-							planes[planeNum].D)
-							/sqrt(planes[planeNum].A*planes[planeNum].A + 
-								planes[planeNum].B*planes[planeNum].B + 
-								planes[planeNum].C*planes[planeNum].C);
+using namespace ci::app;	
 
-	if (distance < leapTapParams.minDistanceToHover)
+bool TapGesture::isFired(Vec3f finger3DPosition, Leap::Pointable trackedPoint, Vec2f mFingerTipPosition, Leap::InteractionBox iBox)
+{
+	float distance = mathTools().distanceToPlane(plane, finger3DPosition);
+
+	if (distance < minDistanceToHover)
 	{
-		if (trackedPoint.tipVelocity().x < leapTapParams.minXVelocity  && trackedPoint.tipVelocity().y < leapTapParams.minYVelocity  )
+		Leap::Vector velocity = trackedPoint.tipVelocity();
+		Leap::Vector position = trackedPoint.tipPosition();
+
+		if (velocity.x < minXVelocity  && velocity.y < minYVelocity  )
 		{
 			saveCoords = mFingerTipPosition;
 
-			if ((trackedPoint.tipVelocity().magnitude()< 5.0f && distance < leapTapParams.minDistanceToTap && gestureOut ) || (distance<4 && gestureOut))
-			{	
-				saveCoordsVec.push_back(mFingerTipPosition);
-				isFired    = true;					
-				gestureOut = false;
-				initParams();	
-				return;
+			if ((velocity.magnitude()< 5.0f && distance < minDistanceToTap && gestureOut ) || (distance < 4 && gestureOut))
+			{					
+				initParams(mFingerTipPosition);	
+				return true;
 			}
 
 			if ( leaptap > 5 )
 			{	
-				if ((getElapsedSeconds() - saveseconds) > leapTapParams.maxSecondsToTap)
+				if ((getElapsedSeconds() - saveseconds) > maxSecondsToTap)
 				{		
-					saveseconds = getElapsedSeconds();
-					saveCoordsVec.clear();
+					saveseconds = getElapsedSeconds();					
 				}
 
-				float _zz = saveZ - leapToWorld( trackedPoint.tipPosition(), iBox).z;
+				float _zz = saveZ - leapToWorld(position, iBox).z;
 
 				if ( _zz < 0 )
 				{
 					leapZ++;
-					saveZ = leapToWorld( trackedPoint.tipPosition(), iBox).z;
-					saveCoordsVec.push_back(mFingerTipPosition);
+					saveZ = leapToWorld(position, iBox).z;					
 				}
 				else
 				{
 					leapZ = 0;
-					saveseconds = getElapsedSeconds();
-					saveCoordsVec.clear();					
+					saveseconds = getElapsedSeconds();								
 				}
-							
-				if (((leapZ > 3 && distance < leapTapParams.minDistanceToTap+5)|| (leapZ > 2 && distance < leapTapParams.minDistanceToTap)) && abs(trackedPoint.tipVelocity().z) > leapTapParams.minZVelocity)
-				{
-					isFired = true;
-					gestureOut = false;
-					initParams();
-						
-					return;
+
+				if (((leapZ > 3 && distance < minDistanceToTap+5)|| (leapZ > 2 && distance < minDistanceToTap)) && abs(velocity.z) > minZVelocity)
+				{					
+					initParams(mFingerTipPosition);						
+					return true;
 				}
 			}
 			else 
@@ -73,18 +59,19 @@ void TapGesture::compute()
 		else
 		{
 			leaptap = leapZ = 0;
-			saveseconds = getElapsedSeconds();
-			saveCoordsVec.clear();
+			saveseconds = getElapsedSeconds();		
 			gestureOut = true;
 		}
 	}
+
+	return false;
 }
 
-void TapGesture::initParams()
+void TapGesture::initParams(Vec2f mFingerTipPosition)
 {
 	leaptap = leapZ = 0;
-	saveCoords = mFingerTipPosition;
-	saveCoordsVec.push_back(mFingerTipPosition);	
+	gestureOut = false;
+	saveCoords = mFingerTipPosition;		
 }
 
 Leap::Vector TapGesture::leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox)
@@ -95,7 +82,39 @@ Leap::Vector TapGesture::leapToWorld(Leap::Vector leapPoint, Leap::InteractionBo
 	return normalized * 100.0; //scale
 }
 
-void TapGesture::setPlanes(MathTools::PlaneCoeff _planes)
+void TapGesture::setPlane(MathTools::PlaneCoeff _plane)
 {
-	planes[0] = _planes;
+	plane = _plane;
 };
+
+Vec2f TapGesture::getPointPosition()
+{
+	return saveCoords;
+}
+
+Leap::Pointable TapGesture::geTrackedPoint(Leap::FingerList fingers)
+{
+	Leap::Pointable trackedPoint;
+
+	if(isExtended)		
+		trackedPoint =  fingers.extended().fingerType(Leap::Finger::Type::TYPE_INDEX)[0];		
+	else		
+		trackedPoint =  fingers.fingerType(Leap::Finger::Type::TYPE_INDEX)[0];	
+
+	return trackedPoint;		
+}
+
+Vec3f TapGesture::getFinger3DPosition(Leap::Pointable trackedPoint)
+{
+	Vec3f finger3DPosition;
+
+	if(isStabilized)		
+		finger3DPosition = Vec3f(trackedPoint.stabilizedTipPosition().x,
+			trackedPoint.stabilizedTipPosition().y, 
+			trackedPoint.tipPosition().z);	
+	else	
+		finger3DPosition = LeapMotion::toVec3f(trackedPoint.tipPosition());
+	
+
+	return  finger3DPosition;
+}

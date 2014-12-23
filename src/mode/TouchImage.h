@@ -10,10 +10,12 @@ namespace touchEvrth
 	class TouchImage : public TouchViewOnGrid
 	{
 	public:
-		TouchImage():alphaFade(0)
+		TouchImage(LeapController *_leap):alphaFade(0)
 		{
+			leap = _leap;
+
 			heinz = Texture(loadImage(loadAsset("beers/003hein.png")));
-			koz	  = Texture(loadImage( loadAsset("beers/003koz.png")));
+			koz	  = Texture(loadImage(loadAsset("beers/003koz.png")));
 
 			bart  = Texture(loadImage(loadAsset("heroes/004bart.png")));
 			cart  = Texture(loadImage(loadAsset("heroes/004cart.png")));
@@ -45,14 +47,17 @@ namespace touchEvrth
 
 		void viewTouch(Vec2f touchPos) override
 		{
-			int index = getTouchCellIndex(touchPos);
-
+			int index  = getTouchCellIndex(touchPos);
+			int index1 = leap->getTouchedButtonsIndex();
+		
 			curImage = imageDictionary[index];
 			alphaFade = 1;
 			timeline().apply( &alphaFade, 0.0f, 1.1f, EaseOutQuad()).delay(1.5f);
 		}
 
 	private:
+		LeapController *leap;
+
 		Texture	curImage;
 		Texture	heinz, koz;
 		Texture	bart, cart, kitty;

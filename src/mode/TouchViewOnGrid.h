@@ -13,7 +13,7 @@ namespace touchEvrth
 {
 	class TouchViewOnGrid : public ITouchViewOnGrid
 	{
-	public:
+	public:			
 		TouchViewOnGrid()
 		{
 			pointerHalfSize = 3.5f;
@@ -38,7 +38,7 @@ namespace touchEvrth
 			int index = i + (j - 1) * partX;
 
 			return index;
-		}
+		}			
 
 		virtual void draw() = 0;
 		virtual void viewTouch(Vec2f pos) = 0;

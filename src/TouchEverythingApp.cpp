@@ -55,10 +55,10 @@ void TouchEverythingApp::initLeapController()
 void TouchEverythingApp::initTouchViews()
 {
 	textView     = new TouchText();
-	imageView    = new TouchImage();
+	imageView    = new TouchImage(leap);
 	keyboardView = new TouchKeyboard();
 
-	setMode(keyboardView);
+	setMode(imageView);
 }
 
 void TouchEverythingApp::setMode(TouchViewOnGrid *_view)
@@ -103,6 +103,11 @@ void TouchEverythingApp::keyDown(KeyEvent event)
 	case KeyEvent::KEY_r:
 		view->reset();
 		break;	
+
+	case KeyEvent::KEY_d:
+		debugView->swapVisible();
+		leap->setTouchMode(debugView->getVisibility());
+		break;
 	}
 }
 

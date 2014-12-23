@@ -29,7 +29,6 @@ namespace touchEvrth
 		void setCameraPersp();
 		void keyDown(KeyEvent event);
 
-		void swapVisible();
 		void hidePointer();
 
 		void drawButtonsControlPoints();
@@ -41,5 +40,7 @@ namespace touchEvrth
 		~DebugView();
 
 		void draw();
+		void swapVisible();
+		bool getVisibility();
 	};
 }

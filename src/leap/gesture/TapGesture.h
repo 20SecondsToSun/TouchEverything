@@ -7,8 +7,45 @@
 using namespace ci;
 using namespace std;
 
-struct LeapTapParams
+class TapGesture 
 {
+public:
+	TapGesture()
+	{
+		leapZ = 0;
+		leaptap = 0;		
+		saveseconds = 0;
+		gestureOut = true;
+		isExtended = false;
+		isStabilized = true;
+		maxSecondsToTap = 0.65f;
+		minDistanceToHover = 25.5;
+		minDistanceToTap = 20;
+		minXVelocity = 80;
+		minYVelocity = 80;
+		minZVelocity = 8;
+	}
+
+	bool isFired(Vec3f, Leap::Pointable, Vec2f, Leap::InteractionBox);
+
+	Leap::Pointable geTrackedPoint(Leap::FingerList fingers);
+	Vec3f getFinger3DPosition(Leap::Pointable trackedPoint);
+
+	Vec2f getPointPosition();
+	void setPlane(MathTools::PlaneCoeff planes);
+
+private:
+
+	MathTools::PlaneCoeff plane;		
+	
+	int	leaptap, leapZ;
+	float saveZ, saveseconds;
+	Vec2f saveCoords;
+	bool gestureOut;
+	void initParams(Vec2f value);	
+
+	Leap::Vector leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
+
 	bool isExtended;
 	bool isStabilized;
 	float minDistanceToHover;
@@ -17,45 +54,4 @@ struct LeapTapParams
 	float minYVelocity;
 	float minZVelocity;
 	float maxSecondsToTap;
-};
-
-class TapGesture 
-{
-public:
-	TapGesture()
-	{
-		leapZ =leaptap = 0;		
-		saveseconds = 0;
-		gestureOut = true;
-
-		leapTapParams.isExtended        = false;
-		leapTapParams.isStabilized      = true;
-		leapTapParams.maxSecondsToTap   = 0.65f;
-		leapTapParams.minDistanceToHover= 25.5;
-		leapTapParams.minDistanceToTap	= 20;
-		leapTapParams.minXVelocity		= 80;
-		leapTapParams.minYVelocity		= 80;
-		leapTapParams.minZVelocity		= 8;
-	}
-
-	Vec3f					 finger3DPosition;
-	Vec2f					 mFingerTipPosition;
-	LeapTapParams			 leapTapParams;
-	void					 compute();
-	bool					 isFired;
-	MathTools::PlaneCoeff	 planes[6];	
-	Leap::Pointable			 trackedPoint;
-	Leap::InteractionBox	 iBox;		
-
-	void setPlanes(MathTools::PlaneCoeff planes);
-	vector<Vec2f> saveCoordsVec;
-
-private:
-	int	leaptap, leapZ;
-	float saveZ, saveseconds;
-	Vec2f saveCoords;
-	bool gestureOut;		
-	Leap::Vector leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox);
-
-	void initParams();		
 };

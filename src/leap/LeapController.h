@@ -28,7 +28,6 @@ namespace leapGestures
 
 namespace leapStates
 {
-	const string DEFAULT	   =  "DEFAULT";
 	const string TOUCH_MODE    =  "TOUCH_MODE";
 	const string DEBUG		   =  "DEBUG";
 }
@@ -53,13 +52,13 @@ public:
 
 	void sleep(float seconds);
 	Vec2f getTouchPosition();
-	vector<Vec2f> getSaveCoordsVec();
 
 	Vec3f getFinger3DPosition();
 	Vec2f getFingerTipPosition();
-	MathTools::PlaneCoeff getPlane();
-	int getBtnIndex();
-	buttonStruct* getBtnVec();
+	MathTools::PlaneCoeff getPlane();	
+	vector<buttonStruct> getBtnVec();
+	void setTouchMode(bool isDebug);
+	int getTouchedButtonsIndex();
 
 private:
 
@@ -69,7 +68,6 @@ private:
 	Leap::Pointable				trackedPoint;
 	Leap::Vector				planePoints[3];
 
-	LeapTapParams leapTapParams;
 	TapGesture tapGesture;
 
 	int GESTURE_ALLOW_TIMER;
@@ -79,21 +77,25 @@ private:
 	int	indexToSet;	
 	
 	string leapTouchMode; 
-	Vec3f finger3DPosition;
-	int	buttonIndex;
+	Vec3f finger3DPosition;	
 
 	void onFrame(Leap::Frame frame);
 	Vec2f warpPointable(const Leap::Pointable& p);
 
 	MathTools::PlaneCoeff plane;
-	buttonStruct buttonVec[6];
+	vector<buttonStruct> buttonVec;
+
+	buttonStruct currentButton;
+
+	void setTouchedButtonsIndex();
+	int touchedIndex;
 	
 	void calcTouchPlanes();
-	void recordPlanePoint();
-	void swapTouchMode();	
+	void recordPlanePoint();	
 	Vec2f getCoords();
 	void setButtonPoint1();
 	void setButtonPoint2();
+	void pushButtonToVec();
 	void deleteLastButton();
 	void setGestureAllowTimer();
 	void calculateFingerTipPosition();

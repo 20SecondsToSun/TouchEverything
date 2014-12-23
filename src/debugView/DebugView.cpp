@@ -68,9 +68,6 @@ void DebugView::keyDown(KeyEvent event)
 {
 	switch (event.getCode())
 	{
-	case KeyEvent::KEY_d:
-		swapVisible();
-		break;
 
 	case KeyEvent::KEY_h:	
 		hidePointer();
@@ -83,6 +80,11 @@ void DebugView::swapVisible()
 	isVisible = !isVisible;
 }
 
+bool DebugView::getVisibility()
+{
+	return isVisible;
+}
+
 void DebugView::hidePointer()
 {
 	isPointerHide = !isPointerHide;
@@ -91,10 +93,9 @@ void DebugView::hidePointer()
 void DebugView::drawButtonsControlPoints()
 {
 	float sphereSize = 4.0f;
-	int buttonIndex = leap->getBtnIndex();
-	LeapController::buttonStruct* buttonVec = leap->getBtnVec();
+	vector<LeapController::buttonStruct> buttonVec = leap->getBtnVec();
 
-	for (int i = 0; i < buttonIndex; i++)
+	for (int i = 0; i < buttonVec.size(); i++)
 	{
 		drawSphere(buttonVec[i].point1, sphereSize);
 		drawSphere(buttonVec[i].point2, sphereSize);
