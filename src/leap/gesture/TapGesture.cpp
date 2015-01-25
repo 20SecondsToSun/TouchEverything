@@ -19,6 +19,7 @@ bool TapGesture::isFired(Vec3f finger3DPosition, Pointable trackedPoint, Vec2f m
 		{
 			touchApplicantPosition = mFingerTipPosition;
 
+
 			if (isFastDetectionConditions())
 				return true;			
 			else if (tap0++ > MIN_TAP0_FRAMES)
