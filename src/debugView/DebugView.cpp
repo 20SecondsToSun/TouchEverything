@@ -1,4 +1,5 @@
 #include "DebugView.h"
+#include "TextTools.h"
 
 using namespace touchEvrth;
 
@@ -11,6 +12,8 @@ DebugView::DebugView(LeapController *_leap)
 	mouseDownCon = getWindow()->getSignalMouseDown().connect(std::bind(&DebugView::mouseDown, this,std::placeholders::_1));
 	mouseDragCon = getWindow()->getSignalMouseDrag().connect(std::bind(&DebugView::mouseDrag, this,std::placeholders::_1));
 	keyDownCon   = getWindow()->getSignalKeyDown().connect(std::bind(&DebugView::keyDown, this,std::placeholders::_1));
+
+	hintFont = Font(loadFile(getAssetPath("fonts/4131341.ttf")), 14);
 }
 
 DebugView::~DebugView()
@@ -36,10 +39,17 @@ void DebugView::draw()
 
 		color(Color::hex(0xff0000));
 		drawSphere(leap->getFinger3DPosition(), 2);
-		
+
 		disableDepthRead();
 		disableDepthWrite();
 		popMatrices();
+
+		textTools().textFieldDraw("press 1, 2, 3 keys for determine button", &hintFont, Vec2f(10.f, 10.f), Color::hex(0xffffff));
+		textTools().textFieldDraw("'s' key for save button", &hintFont, Vec2f(10.f, 30.f), Color::hex(0xff0000));
+		textTools().textFieldDraw("'backspace' key for delete button", &hintFont, Vec2f(10.f, 50.f), Color::hex(0xff0000));
+		textTools().textFieldDraw("'d' key for switch between debug and working area", &hintFont, Vec2f(10.f, 70.f), Color::hex(0xff0000));
+
+		gl::color( Color::hex(0xffffff));
 	}
 	else
 		drawFingerPointer();
@@ -104,7 +114,6 @@ void DebugView::drawButtonsControlPoints()
 
 void DebugView::drawFingerPointer()
 {
-
 	color(Color::hex(0xfa8825));
 	if (!isPointerHide)
 		drawSolidCircle(leap->getFingerTipPosition(), 7);
@@ -112,18 +121,32 @@ void DebugView::drawFingerPointer()
 
 void DebugView::drawTouchPlaneInSpace()
 {
+	list<MathTools::PlaneCoeff> planes = leap->getPlanes();
 	MathTools::PlaneCoeff plane = leap->getPlane();
 
-	color(Colorf(0.2f, 0.2f, 0.2f));
-	drawLine(plane.point0, plane.point1);
-	drawLine(plane.point0, plane.point2);
-	drawLine(plane.point1, plane.point3);
-	drawLine(plane.point2, plane.point3);
+	color(Color(1,0,0));
+		gl::lineWidth(3);
+		drawLine(plane.point0, plane.point1);
+		drawLine(plane.point0, plane.point2);
+		drawLine(plane.point1, plane.point3);
+		drawLine(plane.point2, plane.point3);
+	gl::lineWidth(1);
 
-	color(Color::hex(0xffff00));
-	float sphereSize = 0.3f;	
-	drawSphere(plane.point0, sphereSize);
-	drawSphere(plane.point1, sphereSize);
-	drawSphere(plane.point2, sphereSize);
-	drawSphere(plane.point3, sphereSize);
+	for(auto plane : planes)
+	{
+		color(Color::white());
+		gl::lineWidth(2);
+		drawLine(plane.point0, plane.point1);
+		drawLine(plane.point0, plane.point2);
+		drawLine(plane.point1, plane.point3);
+		drawLine(plane.point2, plane.point3);
+		gl::lineWidth(1);
+
+		color(Color::hex(0xffff00));
+		float sphereSize = 0.4f;	
+		drawSphere(plane.point0, sphereSize);
+		drawSphere(plane.point1, sphereSize);
+		drawSphere(plane.point2, sphereSize);
+		drawSphere(plane.point3, sphereSize);
+	}
 }

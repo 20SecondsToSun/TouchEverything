@@ -110,7 +110,7 @@ void LeapController::calculateFingerTipPosition()
 
 void LeapController::fingerTapFire()
 {	
-	setTouchedButtonsIndex();// if we have that ones
+	//setTouchedButtonsIndex();// if we have that ones
 	leapTouchSignal();	
 	sleep(0.75f);
 }
@@ -135,7 +135,7 @@ void LeapController::setTouchedButtonsIndex()
 
 int LeapController::getTouchedButtonsIndex()
 {
-	return touchedIndex;
+	return tapGesture.getTouchedIndex();  //touchedIndex;
 }
 
 void LeapController::setButtonPoint1()
@@ -175,7 +175,7 @@ void LeapController::calcTouchPlanes()
 	Vec3f p3 = toVec3f(planePoints[2]);
 
 	mathTools().calcTouchPlane(plane, p1, p2, p3, Vec3f::zero());
-	tapGesture.setPlane(plane);	
+	tapGesture.setCalibratingPlane(plane);	
 }
 
 void LeapController::setTouchMode(bool isDebug)
@@ -225,6 +225,11 @@ MathTools::PlaneCoeff LeapController::getPlane()
 	return plane;
 }
 
+list<MathTools::PlaneCoeff> LeapController::getPlanes()
+{
+	return tapGesture.getPlanes();
+}
+
 vector<LeapController::buttonStruct> LeapController::getBtnVec()
 {
 	return buttonVec;
@@ -243,16 +248,25 @@ void LeapController::keyDown(KeyEvent event)
 		indexToSet = (event.getCode() - '0') - 1;
 		break;
 
-	case KeyEvent::KEY_x:				
+	/*case KeyEvent::KEY_x:				
 		setButtonPoint1();
 		break;
 
 	case KeyEvent::KEY_y:			
 		setButtonPoint2();
-		break;	
+		break;	*/
 
 	case KeyEvent::KEY_s:			
-		pushButtonToVec();
+		//pushButtonToVec();		
+		tapGesture.pushPlane(plane);	
+
+		plane.clear();
+
+		planePoints[0] = 
+		planePoints[1] =
+		planePoints[2] = Leap::Vector::zero();
+
+		tapGesture.setCalibratingPlane(plane);
 		break;
 
 	case 13:			
@@ -260,7 +274,8 @@ void LeapController::keyDown(KeyEvent event)
 		break;
 
 	case KeyEvent::KEY_BACKSPACE:		
-		deleteLastButton();					
+		//deleteLastButton();
+		tapGesture.popPlane();
 		break;
 	}
 }

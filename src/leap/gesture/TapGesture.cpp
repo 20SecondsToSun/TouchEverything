@@ -7,8 +7,11 @@ using namespace touchEvrth;
 using namespace tapParams;
 
 bool TapGesture::isFired(Vec3f finger3DPosition, Pointable trackedPoint, Vec2f mFingerTipPosition, InteractionBox iBox)
-{
-	fDistanceToPlane = mathTools().distanceToPlane(plane, finger3DPosition);
+{	
+	touchedPlaneIndex = findTouchedIndex(finger3DPosition);	
+
+	if(touchedPlaneIndex == -1)
+		return false;
 
 	if (fDistanceToPlane < MIN_DISTANCE_HOVER)
 	{
@@ -18,7 +21,6 @@ bool TapGesture::isFired(Vec3f finger3DPosition, Pointable trackedPoint, Vec2f m
 		if (isVelocityXYLimit())
 		{
 			touchApplicantPosition = mFingerTipPosition;
-
 
 			if (isFastDetectionConditions())
 				return true;			
@@ -49,6 +51,38 @@ bool TapGesture::isFired(Vec3f finger3DPosition, Pointable trackedPoint, Vec2f m
 	}
 	resetParams();
 	return false;
+}
+
+int TapGesture::findTouchedIndex(Vec3f finger3DPosition)
+{
+	float fDistanceToPlane = MIN_DISTANCE_HOVER + 1;
+
+	int index = -1, i = 0;
+	
+	for(auto _plane : planes)
+	{
+		float calced = mathTools().distanceToPlane(_plane, finger3DPosition);
+		if (calced < fDistanceToPlane)
+		{
+			fDistanceToPlane = calced;			
+
+			if(finger3DPosition.x > _plane.point0.x && 
+			   finger3DPosition.x < _plane.point3.x && 
+			   finger3DPosition.y < _plane.point0.y && 
+			   finger3DPosition.y > _plane.point3.y)
+			{
+			  index = i;
+			}
+		}
+		i++;
+	}
+
+	return index;
+}
+
+int TapGesture::getTouchedIndex()
+{
+	return touchedPlaneIndex;
 }
 
 bool TapGesture::isVelocityXYLimit()
@@ -93,10 +127,25 @@ Vec2f TapGesture::getPointPosition()
 	return touchApplicantPosition;
 }
 
-void TapGesture::setPlane(MathTools::PlaneCoeff _plane)
+void TapGesture::setCalibratingPlane(MathTools::PlaneCoeff _plane)
 {
 	plane = _plane;
 };
+
+void TapGesture::pushPlane(MathTools::PlaneCoeff _plane)
+{
+	planes.push_back(_plane);
+};
+
+void TapGesture::popPlane()
+{
+	planes.pop_back();
+};
+
+list<MathTools::PlaneCoeff> TapGesture::getPlanes()
+{
+	return planes;
+}
 
 Leap::Vector TapGesture::leapToWorld(Leap::Vector leapPoint, Leap::InteractionBox iBox)
 {

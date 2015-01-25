@@ -25,19 +25,19 @@ namespace touchEvrth
 			blue  = Texture(loadImage(loadAsset("colors/002blu.png")));
 			yel   = Texture(loadImage(loadAsset("colors/002yel.png")));
 
+			imageDictionary[0] = heinz;
 			imageDictionary[1] = bart;
-			imageDictionary[2] = kitty;
-			imageDictionary[3] = cart;
-			imageDictionary[4] = bart;
+			imageDictionary[2] = white;
+			imageDictionary[3] = koz;
+			imageDictionary[4] = cart;
 			imageDictionary[5] = kitty;
-			imageDictionary[6] = cart;
 		}
 
 		void draw() override
 		{
 			gl::color(ColorA(1.0f, 1.0f, 1.0f, alphaFade));
-			if(curImage)
-				gl::draw(curImage);
+			if(curImage)			
+				gl::draw(curImage, getWindowBounds());
 		}
 
 		void reset() override
@@ -45,14 +45,17 @@ namespace touchEvrth
 			alphaFade = 0;
 		}
 
-		void viewTouch(Vec2f touchPos) override
+		void viewTouch(Vec2f touchPos = Vec2f::zero()) override
 		{
-			int index  = getTouchCellIndex(touchPos);
+			//int index  = getTouchCellIndex(touchPos);
 			int index1 = leap->getTouchedButtonsIndex();
-		
-			curImage = imageDictionary[index];
-			alphaFade = 1;
-			timeline().apply( &alphaFade, 0.0f, 1.1f, EaseOutQuad()).delay(1.5f);
+
+			if (index1 != -1)
+			{		
+				curImage = imageDictionary[index1 % 5];
+				alphaFade = 1;
+				timeline().apply( &alphaFade, 0.0f, 1.1f, EaseOutQuad()).delay(1.5f);
+			}
 		}
 
 	private:

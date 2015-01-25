@@ -38,7 +38,7 @@ private:
 
 void TouchEverythingApp::setup()
 {
-	setWindowSize(1400, 800);	
+	setWindowSize(960, 600);	
 	gl::enableAlphaBlending();
 	initLeapController();
 	initTouchViews();	

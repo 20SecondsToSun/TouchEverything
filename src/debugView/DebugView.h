@@ -35,6 +35,8 @@ namespace touchEvrth
 		void drawFingerPointer();
 		void drawTouchPlaneInSpace();
 
+		Font hintFont;
+
 	public:
 		DebugView(LeapController *leap);
 		~DebugView();

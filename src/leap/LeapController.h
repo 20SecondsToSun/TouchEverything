@@ -58,6 +58,7 @@ namespace touchEvrth
 		Vec3f getFinger3DPosition();
 		Vec2f getFingerTipPosition();
 		MathTools::PlaneCoeff getPlane();	
+		list<MathTools::PlaneCoeff> getPlanes();	
 		vector<buttonStruct> getBtnVec();
 		void setTouchMode(bool isDebug);
 		int getTouchedButtonsIndex();
@@ -85,6 +86,7 @@ namespace touchEvrth
 		Vec2f warpPointable(const Leap::Pointable& p);
 
 		MathTools::PlaneCoeff plane;
+		list<MathTools::PlaneCoeff> planes;
 		vector<buttonStruct> buttonVec;
 
 		buttonStruct currentButton;

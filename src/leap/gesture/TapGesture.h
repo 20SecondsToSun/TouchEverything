@@ -12,8 +12,8 @@ namespace touchEvrth
 {
 	namespace tapParams
 	{
-		static const float  MIN_DISTANCE_HOVER = 25.5f;
-		static const float  MIN_DISTANCE_TAP = 20.0f;
+		static const float  MIN_DISTANCE_HOVER = 15.5f;
+		static const float  MIN_DISTANCE_TAP = 5.0f;
 		static const float  MAX_GESTURE_TIME = 0.65f;
 		static const float  SO_CLOSE_DISTANCE = 4.0f;
 
@@ -24,7 +24,7 @@ namespace touchEvrth
 		static const float  IS_EXTENDED = false;
 		static const float  IS_STABILIZED = true;
 
-		static const int  MIN_TAP0_FRAMES = 5;
+		static const int  MIN_TAP0_FRAMES = 8;
 	}
 
 	class TapGesture 
@@ -41,11 +41,20 @@ namespace touchEvrth
 		Vec3f getFinger3DPosition(Pointable trackedPoint);
 
 		Vec2f getPointPosition();
-		void setPlane(MathTools::PlaneCoeff planes);
+		void setCalibratingPlane(MathTools::PlaneCoeff plane);
+
+		void pushPlane(MathTools::PlaneCoeff plane);
+		void popPlane();
+		list<MathTools::PlaneCoeff> getPlanes();
+
+		int getTouchedIndex();
 
 	private:
+		int touchedPlaneIndex;
 
-		MathTools::PlaneCoeff plane;	
+		MathTools::PlaneCoeff plane;
+		list<MathTools::PlaneCoeff> planes;
+		
 
 		Vector fingerVelocity, fingerPosition;
 		Vec2f touchApplicantPosition;
@@ -59,6 +68,8 @@ namespace touchEvrth
 		bool isFastDetectionConditions();
 		bool isFinalGesturePartSatisfy();
 		void resetParams();	
-		Vector leapToWorld(Vector leapPoint, InteractionBox iBox);			
+		Vector leapToWorld(Vector leapPoint, InteractionBox iBox);		
+
+		int findTouchedIndex(Vec3f finger3DPosition);
 	};
 }

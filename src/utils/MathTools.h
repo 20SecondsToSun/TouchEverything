@@ -11,6 +11,19 @@ class MathTools
 public:
 	struct PlaneCoeff
 	{
+		PlaneCoeff():A(0), 
+			B(0),
+			C(0),
+			D(0),
+			point0(Vec3f::zero()),
+			point1(Vec3f::zero()),
+			point2(Vec3f::zero()),
+			point3(Vec3f::zero()){}
+		void clear()
+		{
+			A = B = C = D = 0;
+			point0 = point1 = point2 = point3 = Vec3f::zero();
+		}
 		float A;
 		float B; 
 		float C; 
